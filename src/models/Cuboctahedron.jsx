@@ -7,10 +7,9 @@ Title: Cuboctahedron
 */
 import { useRef, useEffect, useState } from "react";
 import { useGLTF } from "@react-three/drei";
-import {useFrame, useThree} from '@react-three/fiber';
+import {useFrame} from '@react-three/fiber';
 import cuboctahedron from '../assets/3d/shapes/cuboctahedron.glb';
 import {a} from '@react-spring/three';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
 
 const Cuboctahedron = (props) => {
     const cuboRef = useRef();
@@ -18,8 +17,10 @@ const Cuboctahedron = (props) => {
     const [moveAway, setMoveAway] = useState(false);
 
     useFrame(({clock}) => {
+        // Rotation animation
         cuboRef.current.rotation.x += 0.005;
         cuboRef.current.rotation.y += 0.005;
+        // Moving away animation
         if (moveAway) {
             if (cuboRef.current.position.y <= -300) {
                 setMoveAway(false);
@@ -30,12 +31,14 @@ const Cuboctahedron = (props) => {
             }
         }
     });
+
     useEffect(() => {
         if (props.clicked) {
             setMoveAway(true);
             props.setClicked(false);
         }
     },[props.clicked])
+    
     return (
         <a.group ref={cuboRef} {...props}>
             <mesh

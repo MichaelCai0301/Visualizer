@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import {Link} from "react-router-dom";
 
 const AlgoNavbar = (props) => {
-  const [hide, setHide] = useState(false);
 
   useEffect(() => {
     if (props.hovered == 1) {
@@ -11,7 +10,6 @@ const AlgoNavbar = (props) => {
     } else if (props.hovered == 2) {
       props.setTypeSelected("dutch");
     }
-    console.log('++'+ props.typeSelected+'++');
   },[props.hovered])
 
   return (

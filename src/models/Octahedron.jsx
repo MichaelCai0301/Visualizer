@@ -9,11 +9,9 @@ Title: Octahedron
 
 import { useRef, useEffect, useState } from "react";
 import { useGLTF } from "@react-three/drei";
-import {useFrame, useThree} from '@react-three/fiber';
+import {useFrame} from '@react-three/fiber';
 import octahedron from '../assets/3d/shapes/octahedron.glb';
 import {a} from '@react-spring/three';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import { useNavigate } from "react-router-dom";
 
 
 const Octahedron = (props) => {
@@ -25,19 +23,19 @@ const Octahedron = (props) => {
         // Rotation animation
         octahedronRef.current.rotation.x += 0.005;
         octahedronRef.current.rotation.y += 0.005;
+        // Moving away animation
         if (moveAway) {
             if (octahedronRef.current.position.y <= -100) {
                 setMoveAway(false);
-                // CODE TO MOVE TO OTHER PAGE
-                console.log('---', props.typeSelected);
+                // Move to other page
                 props.navigateFunction(props.typeSelected);
             } else if (moveAway) {
-                // Moving away animation
                 octahedronRef.current.position.y -= Math.min(1.9**(1.5*(clock.elapsedTime)), 10);
                 octahedronRef.current.position.x += Math.min(1.9**(3*(clock.elapsedTime)), 10);
             }
         }
     });
+
     // Trigger moving away animation
     useEffect(() => {
         if (props.clicked) {
@@ -45,6 +43,7 @@ const Octahedron = (props) => {
             props.setClicked(false);
         }
     },[props.clicked])
+    
     return (
         <a.group ref={octahedronRef} {...props}>
             <mesh
