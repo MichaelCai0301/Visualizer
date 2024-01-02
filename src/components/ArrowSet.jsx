@@ -1,9 +1,10 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Arrow from '../models/Arrow';
 
 
 const ArrowSet = (props) => {
     const [moveDirection, setMoveDirection] = useState("");
+   
     
     const leftArrowRotation = [0.1, -0.1, 2];
     const downArrowRotation = [0.3, 0.1, 3.5];
@@ -17,6 +18,33 @@ const ArrowSet = (props) => {
 
     const shapePosition = [-500, 500, -1063];
 
+    const [appearUp, setAppearUp] = useState(true);
+    const [appearLeft, setAppearLeft] = useState(true);
+    const [appearDown, setAppearDown] = useState(true);
+    const [appearRight, setAppearRight] = useState(true);
+
+    const [nodeR, setNodeR] = useState(0);
+    const [nodeC, setNodeC] = useState(0);
+
+    useEffect(() => {
+        // Delete arrows if necessary
+        if (nodeC == 0 || props.graph[nodeR][nodeC-1] !== undefined) {
+            setAppearLeft(false);
+        } else setAppearLeft(true);
+        if (nodeC == props.graph[0].length || props.graph[nodeR][nodeC+1] !== undefined) {
+            setAppearRight(false);
+        } else setAppearRight(true);
+        if (nodeR == props.graph[0].length || props.graph[nodeR+1][nodeC] !== undefined) {
+            setAppearDown(false);
+        } else setAppearDown(true);
+        if (nodeR == 0 || props.graph[nodeR-1][nodeC] !== undefined) {
+            setAppearUp(false);
+        } else setAppearUp(true);
+        
+    }, [props.graph])
+
+    
+
     // Shared arrow props
     const arrowProps = {
         scale: arrowScale,
@@ -25,6 +53,10 @@ const ArrowSet = (props) => {
         addNode: props.addNode,
         moveDirection: moveDirection,
         setMoveDirection: setMoveDirection,
+        nodeR: nodeR,
+        nodeC: nodeC,
+        setNodeR: setNodeR,
+        setNodeC: setNodeC
     };
 
     return (
@@ -33,24 +65,28 @@ const ArrowSet = (props) => {
                 position={startArrowDownPos}
                 rotation={downArrowRotation}
                 type = {'down'} 
+                appear={appearDown}
                 {...arrowProps}
             />
             <Arrow 
                 position={startArrowRightPos}
                 rotation={rightArrowRotation}
                 type = {'right'} 
+                appear={appearRight}
                 {...arrowProps}            
             />
             <Arrow 
                 position={startArrowUpPos}
                 rotation={upArrowRotation}
                 type = {'up'} 
+                appear={appearUp}
                 {...arrowProps}
             />
             <Arrow 
                 position={startArrowLeftPos}
                 rotation={leftArrowRotation}
                 type = {'left'} 
+                appear={appearLeft}
                 {...arrowProps}
             />
         </>
