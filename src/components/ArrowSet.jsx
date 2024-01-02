@@ -26,24 +26,34 @@ const ArrowSet = (props) => {
     const [nodeR, setNodeR] = useState(0);
     const [nodeC, setNodeC] = useState(0);
 
+    //! IMPORTANT: Row is reversed: position-wise, nodeR should be negative, but when indexing with nodeR,
+    //! use -nodeR
+
     useEffect(() => {
         // Delete arrows if necessary
-        if (nodeC == 0 || props.graph[nodeR][nodeC-1] !== undefined) {
+        if (nodeC == 0) {
             setAppearLeft(false);
         } else setAppearLeft(true);
-        if (nodeC == props.graph[0].length || props.graph[nodeR][nodeC+1] !== undefined) {
+        if (nodeC == props.graph[0].length) {
             setAppearRight(false);
         } else setAppearRight(true);
-        if (nodeR == props.graph[0].length || props.graph[nodeR+1][nodeC] !== undefined) {
+        if (nodeR == props.graph[0].length) {
             setAppearDown(false);
         } else setAppearDown(true);
-        if (nodeR == 0 || props.graph[nodeR-1][nodeC] !== undefined) {
+        if (nodeR == 0) {
             setAppearUp(false);
         } else setAppearUp(true);
         
     }, [props.graph])
 
-    
+    useEffect(() => {
+        if (props.done) {
+            setAppearLeft(false);
+            setAppearRight(false);
+            setAppearDown(false);
+            setAppearUp(false);
+        }
+    }, [props.done])
 
     // Shared arrow props
     const arrowProps = {
@@ -56,7 +66,9 @@ const ArrowSet = (props) => {
         nodeR: nodeR,
         nodeC: nodeC,
         setNodeR: setNodeR,
-        setNodeC: setNodeC
+        setNodeC: setNodeC,
+        done: props.done,
+        setDone: props.setDone
     };
 
     return (

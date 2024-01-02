@@ -11,6 +11,7 @@ const Tortoise = () => {
     // Universal graph
     const [graph, setGraph] = graphComponents;
     const [curGraph, setCurGraph] = useState(graph);
+    const [done, setDone] = useState(false);
     
     const scaleToScreenSize = () => {
         let screenScale = null;
@@ -26,6 +27,7 @@ const Tortoise = () => {
     const [shapeScale, shapePosition, shapeRotation] = scaleToScreenSize();
 
     const addNode = (node, r, c) => {
+        console.log('|'+r, c);
         const newGraph = [...graph.map(row => [...row])];
         newGraph[r][c] = node;
         graph[r][c] = node;        
@@ -48,12 +50,12 @@ const Tortoise = () => {
         let nodeArr = [];
         for (let c = 0; c < 7; c++) {
             nodeArr.push(
-                undefined
+                null
             );
         }
         graph.push(nodeArr);
     }
-    graph[0][0] = createNode(shapePosition, undefined);
+    graph[0][0] = createNode(shapePosition);
 
     return (
         <>
@@ -67,6 +69,8 @@ const Tortoise = () => {
                             createNode = {createNode}
                             addNode = {addNode}
                             graph = {curGraph}
+                            done = {done}
+                            setDone = {setDone}
                         />
                            {curGraph}
                     </Suspense>
