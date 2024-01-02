@@ -25,9 +25,24 @@ const Home = () => {
         return [screenScale, screenPosition, rotation];
     };
     const [shapeScale, shapePosition, shapeRotation] = scaleToScreenSize();
+
     const handleClick = (e) => {
         setClicked(true);
     };
+
+    // Props shared by shapes
+    const shapeProps = {
+        scale: shapeScale,
+        rotation: shapeRotation,
+        onClick: handleClick,
+        hovered: hovered,
+        setHovered: setHovered,
+        clicked: clicked,
+        setClicked: setClicked,
+        typeSelected: typeSelected,
+        setTypeSelected: setTypeSelected
+    };
+
     return (
         <>
             <section className='w-full h-screen relative'>
@@ -46,27 +61,11 @@ const Home = () => {
                         <hemisphereLight skyColor="#b1e1ff" groundColor="#000000" intensity={1} />
                             <Cuboctahedron 
                                 position={[50, -80.5, -243]}
-                                scale={shapeScale}
-                                rotation={shapeRotation}
-                                onClick={handleClick}
-                                hovered = {hovered} 
-                                setHovered = {setHovered}
-                                clicked = {clicked}
-                                setClicked = {setClicked}
-                                typeSelected = {typeSelected}
-                                setTypeSelected = {setTypeSelected}
+                                {...shapeProps}
                             />
                             <Octahedron 
                                 position={shapePosition}
-                                scale={shapeScale}
-                                rotation={shapeRotation}
-                                onClick={handleClick}
-                                hovered = {hovered} 
-                                setHovered = {setHovered} // CHANGE TO USING REACT'S 'context' for passing hovered/sethovered?
-                                clicked = {clicked}
-                                setClicked = {setClicked}
-                                typeSelected = {typeSelected}
-                                setTypeSelected = {setTypeSelected}
+                                {...shapeProps}
                                 navigateFunction = {(type) => {
                                     if (type === "Statistics") {
                                         console.log('stats');

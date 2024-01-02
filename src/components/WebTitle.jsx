@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import title from '../assets/visualizer.gif';
 
@@ -16,7 +15,6 @@ const WebTitle = (props) => {
       setTextColor({color:' #ffa8fc'});
       props.setTypeSelected("Algorithms");
     }
-    console.log('++'+ props.typeSelected+'++');
   },[props.hovered])
 
   useEffect(() => {
