@@ -66,6 +66,7 @@ const Tortoise = () => {
                         <ArrowSet
                             createNode = {createNode}
                             addNode = {addNode}
+                            graph = {curGraph}
                         />
                            {curGraph}
                     </Suspense>
