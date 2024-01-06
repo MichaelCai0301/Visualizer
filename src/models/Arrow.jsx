@@ -1,9 +1,10 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useContext} from "react";
 import { useGLTF } from "@react-three/drei";
 import arrow from '../assets/3d/shapes/arrow.glb';
 import {a} from '@react-spring/three';
 import graphComponents from '../components/graph';
 import {Html} from '@react-three/drei';
+import { Context } from "../pages/Tortoise";
 
 
 const Arrow = (props) => {
@@ -11,7 +12,7 @@ const Arrow = (props) => {
     const [graph, setGraph] = graphComponents;
     const { nodes, materials } = useGLTF(arrow);
     const [hovered, setHovered] = useState(0);
-    
+    var [c, setC] = useContext(Context);
 
     const nodePosScaleFactor = 300;
     const arrowPosScaleFactor = 1.5;
@@ -31,11 +32,10 @@ const Arrow = (props) => {
             arrowRef.current.position.y -= arrowPosScaleFactor;
         }
         props.setMoveDirection("");
-    }, [props.moveDirection])
-
+    }, [props.moveDirection]);
+    
 
     const handleClick = (e) => {
-        // console.log(props.nodeR, props.nodeC);
         if (props.appear) {
             if (props.type === "right") {
                 // If moving into existing node
@@ -46,14 +46,16 @@ const Arrow = (props) => {
                 // Create node to the right
                 const newPos = [props.curNodePos[0]+(props.nodeC+1)*nodePosScaleFactor, 
                     props.curNodePos[1]+props.nodeR*nodePosScaleFactor, props.curNodePos[2]];            
-                const newNode = props.createNode(newPos);
+                const newNode = props.createNode(newPos, {r:props.nodeR,c:props.nodeC}, false);
                 props.setMoveDirection("right");
     
                 // Create node
                 props.addNode(newNode, -props.nodeR, props.nodeC+1);
     
                 props.setNodeC(props.nodeC+1);
+                // setC(c+1);
                 props.setNodeR(props.nodeR);
+                // console.log("C", c);
             } else if (props.type === "down") {
                 // If moving into existing node
                 if (graph[-props.nodeR+1][props.nodeC] !== null) {
@@ -63,12 +65,11 @@ const Arrow = (props) => {
                 // Create node to downwards direction
                 const newPos = [props.curNodePos[0]+props.nodeC*nodePosScaleFactor,
                     props.curNodePos[1]+(props.nodeR-1)*nodePosScaleFactor, props.curNodePos[2]];            
-                const newNode = props.createNode(newPos);
+                const newNode = props.createNode(newPos, {r:props.nodeR,c:props.nodeC}, false);
                 props.setMoveDirection("down");
     
                 // Create node
                 props.addNode(newNode, -(props.nodeR-1), props.nodeC);
-    
                 props.setNodeC(props.nodeC);
                 props.setNodeR(props.nodeR-1);
             } else if (props.type === "left") {
@@ -80,7 +81,7 @@ const Arrow = (props) => {
                 // Create node to the right
                 const newPos = [props.curNodePos[0]+(props.nodeC-1)*nodePosScaleFactor, 
                     props.curNodePos[1]+props.nodeR*nodePosScaleFactor, props.curNodePos[2]];            
-                const newNode = props.createNode(newPos);
+                const newNode = props.createNode(newPos,{r:props.nodeR,c:props.nodeC}, false);
                 props.setMoveDirection("left");
     
                 // Create node
@@ -97,7 +98,7 @@ const Arrow = (props) => {
                 // Create node to downwards direction
                 const newPos = [props.curNodePos[0]+props.nodeC*nodePosScaleFactor,
                     props.curNodePos[1]+(props.nodeR+1)*nodePosScaleFactor, props.curNodePos[2]];            
-                const newNode = props.createNode(newPos);
+                const newNode = props.createNode(newPos,{r:props.nodeR,c:props.nodeC}, false);
                 props.setMoveDirection("up");
     
                 // Create node
@@ -106,10 +107,15 @@ const Arrow = (props) => {
                 props.setNodeC(props.nodeC);
                 props.setNodeR(props.nodeR+1);
             }
-            console.log(props.nodeR, props.nodeC);
         }
     }
 
+    useEffect(()=>{
+        if (props.nodeClicked) {
+            props.deleteNode(-props.nodeR, props.nodeC);
+            props.setNodeClicked(false);
+        }
+    }, [props.nodeClicked]);
 
     return (
         <a.group ref={arrowRef} {...props}>

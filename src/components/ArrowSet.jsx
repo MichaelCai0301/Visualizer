@@ -23,28 +23,34 @@ const ArrowSet = (props) => {
     const [appearDown, setAppearDown] = useState(true);
     const [appearRight, setAppearRight] = useState(true);
 
-    const [nodeR, setNodeR] = useState(0);
-    const [nodeC, setNodeC] = useState(0);
 
     //! IMPORTANT: Row is reversed: position-wise, nodeR should be negative, but when indexing with nodeR,
     //! use -nodeR
 
     useEffect(() => {
         // Delete arrows if necessary
-        if (nodeC == 0) {
+        if (props.nodeC == 0) {
             setAppearLeft(false);
         } else setAppearLeft(true);
-        if (nodeC == props.graph[0].length) {
+        if (props.nodeC == props.graph[0].length) {
             setAppearRight(false);
         } else setAppearRight(true);
-        if (nodeR == props.graph[0].length) {
+        if (props.nodeR == props.graph[0].length) {
             setAppearDown(false);
         } else setAppearDown(true);
-        if (nodeR == 0) {
+        if (props.nodeR == 0) {
             setAppearUp(false);
         } else setAppearUp(true);
-        
     }, [props.graph])
+
+    useEffect(() => {
+        var [r, c] = [props.nodeR, props.nodeC];
+        console.log("A", props.nodeR, props.nodeC);
+    }, [props.nodeR]);
+    useEffect(() => {
+        var [r, c] = [props.nodeR, props.nodeC];
+        console.log("A", props.nodeR, props.nodeC);
+    }, [props.nodeC]);
 
     useEffect(() => {
         if (props.done) {
@@ -53,7 +59,8 @@ const ArrowSet = (props) => {
             setAppearDown(false);
             setAppearUp(false);
         }
-    }, [props.done])
+    }, [props.done]);
+
 
     // Shared arrow props
     const arrowProps = {
@@ -63,12 +70,15 @@ const ArrowSet = (props) => {
         addNode: props.addNode,
         moveDirection: moveDirection,
         setMoveDirection: setMoveDirection,
-        nodeR: nodeR,
-        nodeC: nodeC,
-        setNodeR: setNodeR,
-        setNodeC: setNodeC,
+        nodeR: props.nodeR,
+        nodeC: props.nodeC,
+        setNodeR: props.setNodeR,
+        setNodeC: props.setNodeC,
         done: props.done,
-        setDone: props.setDone
+        setDone: props.setDone,
+        nodeClicked: props.nodeClicked,
+        setNodeClicked: props.setNodeClicked,
+        deleteNode: props.deleteNode
     };
 
     return (
@@ -78,6 +88,7 @@ const ArrowSet = (props) => {
                 rotation={downArrowRotation}
                 type = {'down'} 
                 appear={appearDown}
+                onClick = {() => props.setNodeDir('down')}
                 {...arrowProps}
             />
             <Arrow 
@@ -85,6 +96,7 @@ const ArrowSet = (props) => {
                 rotation={rightArrowRotation}
                 type = {'right'} 
                 appear={appearRight}
+                onClick = {() => props.setNodeDir('right')}
                 {...arrowProps}            
             />
             <Arrow 
@@ -92,6 +104,7 @@ const ArrowSet = (props) => {
                 rotation={upArrowRotation}
                 type = {'up'} 
                 appear={appearUp}
+                onClick = {() => props.setNodeDir('up')}
                 {...arrowProps}
             />
             <Arrow 
@@ -99,6 +112,7 @@ const ArrowSet = (props) => {
                 rotation={leftArrowRotation}
                 type = {'left'} 
                 appear={appearLeft}
+                onClick = {() => props.setNodeDir('left')}
                 {...arrowProps}
             />
         </>

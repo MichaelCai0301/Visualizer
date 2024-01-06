@@ -1,17 +1,25 @@
 
 
 import { Canvas } from '@react-three/fiber';
-import { Suspense, useState, useEffect} from 'react';
+import { Suspense, useState, useEffect, useContext, createContext} from 'react';
 import { Loader } from '../components/Loader';
 import Node from '../models/Node';
 import graphComponents from '../components/graph';
 import ArrowSet from '../components/ArrowSet';
+
+export const Context = createContext();
 
 const Tortoise = () => {
     // Universal graph
     const [graph, setGraph] = graphComponents;
     const [curGraph, setCurGraph] = useState(graph);
     const [done, setDone] = useState(false);
+    var [coordStack, setCoordStack] = useState([]);
+    
+    const [nodeR, setNodeR] = useState(0);
+    const [nodeC, setNodeC] = useState(0);
+    const [nodeDir, setNodeDir] = useState("");
+    const [nodeClicked, setNodeClicked] = useState(false);
     
     const scaleToScreenSize = () => {
         let screenScale = null;
@@ -27,20 +35,35 @@ const Tortoise = () => {
     const [shapeScale, shapePosition, shapeRotation] = scaleToScreenSize();
 
     const addNode = (node, r, c) => {
-        console.log('|'+r, c);
         const newGraph = [...graph.map(row => [...row])];
         newGraph[r][c] = node;
-        graph[r][c] = node;        
+        graph[r][c] = node; 
         setCurGraph(newGraph);
     }
 
-    const createNode = (nodePos) => {
+    const deleteNode = (r, c) => {
+        const newGraph = [...graph.map(row => [...row])];
+        newGraph[r][c] = null;
+        graph[r][c] = null;     
+        setCurGraph(newGraph);
+    }
+
+    const createNode = (nodePos, coords, firstNode) => {
+        if (!firstNode) setCoordStack([...coordStack, {r: nodeR, c: nodeC}]);
         return (
             <Node 
                 key = {100*nodePos[0]+nodePos[1]}
+                r={coords.r}
+                c={coords.c}
                 position={nodePos}
                 scale={shapeScale}
-                rotation={shapeRotation} // CHANGE TO USING REACT'S 'context' for passing hovered/sethovered?
+                rotation={shapeRotation} 
+                deleteNode={deleteNode}
+                nodeR={nodeR}
+                nodeC={nodeC}
+                nodeDir={nodeDir}
+                setNodeClicked={setNodeClicked}
+                firstNode={firstNode}
             />
         );     
     }
@@ -55,10 +78,10 @@ const Tortoise = () => {
         }
         graph.push(nodeArr);
     }
-    graph[0][0] = createNode(shapePosition);
+    graph[0][0] = createNode(shapePosition, {r:0,c:0}, true);
 
     return (
-        <>
+        <Context.Provider value={[coordStack, setCoordStack]}>
             <section className='w-full h-screen relative'>
                 <Canvas className="w-full h-screen bg-transparent" camera={{near: 0.1, far:1000}}>
                     <Suspense fallback={<Loader/>}>
@@ -71,12 +94,20 @@ const Tortoise = () => {
                             graph = {curGraph}
                             done = {done}
                             setDone = {setDone}
+                            nodeC = {nodeC}
+                            setNodeC = {setNodeC}
+                            nodeR = {nodeR}
+                            setNodeR = {setNodeR}
+                            setNodeDir = {setNodeDir}
+                            nodeClicked={nodeClicked}
+                            setNodeClicked={setNodeClicked}
+                            deleteNode={deleteNode}
                         />
                            {curGraph}
                     </Suspense>
                 </Canvas> 
             </section>
-        </>
+        </Context.Provider>
     )
 }
 
