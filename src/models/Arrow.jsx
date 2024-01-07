@@ -33,9 +33,15 @@ const Arrow = (props) => {
         props.setMoveDirection("");
     }, [props.moveDirection])
 
+    // Reset arrows if graph is reset
+    useEffect(() => {
+        arrowRef.current.position.x = props.position[0];
+        arrowRef.current.position.y = props.position[1];
+        props.setReset(false);
+    }, [props.reset])
+
 
     const handleClick = (e) => {
-        // console.log(props.nodeR, props.nodeC);
         if (props.appear) {
             if (props.type === "right") {
                 // If moving into existing node

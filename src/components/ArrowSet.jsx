@@ -46,6 +46,14 @@ const ArrowSet = (props) => {
         
     }, [props.graph])
 
+    // Reset arrows + node position if graph is reset
+    useEffect(() => {
+        setAppearUp(false);
+        setAppearLeft(false);
+        setNodeC(0);
+        setNodeR(0);
+    }, [props.reset])
+
     useEffect(() => {
         if (props.done) {
             setAppearLeft(false);
@@ -68,7 +76,9 @@ const ArrowSet = (props) => {
         setNodeR: setNodeR,
         setNodeC: setNodeC,
         done: props.done,
-        setDone: props.setDone
+        setDone: props.setDone,
+        reset: props.reset,
+        setReset: props.setReset,
     };
 
     return (
@@ -92,6 +102,7 @@ const ArrowSet = (props) => {
                 rotation={upArrowRotation}
                 type = {'up'} 
                 appear={appearUp}
+                setAppear = {setAppearUp}
                 {...arrowProps}
             />
             <Arrow 
@@ -99,6 +110,7 @@ const ArrowSet = (props) => {
                 rotation={leftArrowRotation}
                 type = {'left'} 
                 appear={appearLeft}
+                setAppear = {setAppearLeft}
                 {...arrowProps}
             />
         </>
