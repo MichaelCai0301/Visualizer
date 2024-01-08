@@ -16,15 +16,15 @@ const Tortoise = () => {
     const [reset, setReset] = useState(false);
     const [closeCycleTube, setCloseCycleTube] = useState(<></>);
 
-
     const vertTubeRotation = [0,0.5,1.6];
     const horizTubeRotation = [0,0,0];
-    const tubeScale = [0.9,0.9,0.9];
-    const startTubeRightPos = [-2.35,4.2,-2];
-    const startTubeDownPos = [-3.5,3,-2];
-    const startTubeLeftPos = [-4.65,4.2,-2];
-    const startTubeUpPos = [-3.5,5.38,-2];
-    const horizTubeScaleFactor = startTubeRightPos[0] - startTubeLeftPos[0];
+    const tubeScaleLeftDown = [-0.1,0.1,0.1];
+    const tubeScaleRightUp = [0.1,0.1,0.1];
+    const startTubeRightPos = [-2.5,4,-2];
+    const startTubeDownPos= [-3.28,3.2,-2];
+    const startTubeLeftPos = [-4.45,4,-2];
+    const startTubeUpPos = [-3.28,5.1,-2];
+    const horizTubeScaleFactor= startTubeRightPos[0] - startTubeLeftPos[0];
     const vertTubeScaleFactor = startTubeUpPos[1] - startTubeDownPos[1];
     
     const scaleToScreenSize = () => {
@@ -56,7 +56,8 @@ const Tortoise = () => {
                     position = {position}
                     rotation = {rotation}
                     appear = {true}
-                    scale = {tubeScale}
+                    scale = {(direction === "right" || direction === "up") ? tubeScaleRightUp :
+                        tubeScaleLeftDown}
                 />
             );
         } else {
@@ -78,7 +79,8 @@ const Tortoise = () => {
                 rotation={shapeRotation} 
                 vertTubeRotation = {vertTubeRotation}
                 horizTubeRotation = {horizTubeRotation}
-                tubeScale = {tubeScale}
+                tubeScaleLeftDown = {tubeScaleLeftDown}
+                tubeScaleRightUp = {tubeScaleRightUp}
                 startTubeRightPos = {startTubeRightPos}
                 startTubeDownPos = {startTubeDownPos}
                 startTubeLeftPos = {startTubeLeftPos}

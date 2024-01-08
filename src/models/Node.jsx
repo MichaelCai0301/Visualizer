@@ -4,6 +4,7 @@ import node from '../assets/3d/shapes/sphere.glb';
 import {a} from '@react-spring/three';
 import Tube from "./Tube";
 
+
 const Node = (props) => {
     const nodeRef = useRef();
     const { nodes, materials } = useGLTF(node);
@@ -27,7 +28,6 @@ const Node = (props) => {
     position[0] += props.nodeCoords.c * horizTubeScaleFactor;
     position[1] -= props.nodeCoords.r * vertTubeScaleFactor;
 
-
     return (
         <>
             <a.group ref={nodeRef} {...props}>
@@ -44,7 +44,8 @@ const Node = (props) => {
                 rotation = {rotation}
                 appear = {props.direction === "right" || props.direction === "left" || 
                     props.direction === "up" || props.direction === "down"}
-                scale = {tubeScale}
+                scale = {props.direction === "right" || props.direction === "up" ? props.tubeScaleRightUp :
+                    props.tubeScaleLeftDown}
             />
         </>
     );
