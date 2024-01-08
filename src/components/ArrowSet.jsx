@@ -60,6 +60,7 @@ const ArrowSet = (props) => {
             setAppearRight(false);
             setAppearDown(false);
             setAppearUp(false);
+            props.setDone(false);
         }
     }, [props.done])
 
