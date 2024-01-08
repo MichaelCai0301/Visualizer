@@ -7,13 +7,25 @@ import Node from '../models/Node';
 import graphComponents from '../components/graph';
 import ArrowSet from '../components/ArrowSet';
 import removeGif from '../assets/remove.gif';
-
+import Tube from '../models/Tube';
 const Tortoise = () => {
     // Universal graph
     const [graph, setGraph] = graphComponents;
     const [curGraph, setCurGraph] = useState(graph);
     const [done, setDone] = useState(false);
     const [reset, setReset] = useState(false);
+    const [closeCycleTube, setCloseCycleTube] = useState(<></>);
+
+
+    const vertTubeRotation = [0,0.5,1.6];
+    const horizTubeRotation = [0,0,0];
+    const tubeScale = [0.9,0.9,0.9];
+    const startTubeRightPos = [-2.35,4.2,-2];
+    const startTubeDownPos = [-3.5,3,-2];
+    const startTubeLeftPos = [-4.65,4.2,-2];
+    const startTubeUpPos = [-3.5,5.38,-2];
+    const horizTubeScaleFactor = startTubeRightPos[0] - startTubeLeftPos[0];
+    const vertTubeScaleFactor = startTubeUpPos[1] - startTubeDownPos[1];
     
     const scaleToScreenSize = () => {
         let screenScale = null;
@@ -28,21 +40,51 @@ const Tortoise = () => {
     }
     const [shapeScale, shapePosition, shapeRotation] = scaleToScreenSize();
 
-    const addNode = (node, r, c) => {
-        console.log('|'+r, c);
-        const newGraph = [...graph.map(row => [...row])];
-        newGraph[r][c] = node;
-        graph[r][c] = node;        
-        setCurGraph(newGraph);
+    const addNode = (node, r, c, done, direction) => {
+        if (done) {
+            console.log("DONE");
+            // Prevent overriding existing node when cycle is completed
+            const rotation = direction === "right" || direction === "left" ? horizTubeRotation : vertTubeRotation;
+            var position = startTubeRightPos;
+            if (direction === "right") position = startTubeLeftPos;
+            else if (direction === "up") position = startTubeDownPos;
+            else if (direction === "down") position = startTubeUpPos
+            position[0] += c * horizTubeScaleFactor;
+            position[1] -= r * vertTubeScaleFactor;
+            setCloseCycleTube(
+                <Tube
+                    position = {position}
+                    rotation = {rotation}
+                    appear = {true}
+                    scale = {tubeScale}
+                />
+            );
+        } else {
+            const newGraph = [...graph.map(row => [...row])];
+            newGraph[r][c] = node; // Overrides node space
+            graph[r][c] = node;        
+            setCurGraph(newGraph);
+        }
     }
 
-    const createNode = (nodePos) => {
+    const createNode = (nodePos, direction, nodeCoords) => {
         return (
             <Node 
                 key = {100*nodePos[0]+nodePos[1]}
+                direction = {direction}
                 position={nodePos}
+                nodeCoords = {nodeCoords}
                 scale={shapeScale}
-                rotation={shapeRotation} // CHANGE TO USING REACT'S 'context' for passing hovered/sethovered?
+                rotation={shapeRotation} 
+                vertTubeRotation = {vertTubeRotation}
+                horizTubeRotation = {horizTubeRotation}
+                tubeScale = {tubeScale}
+                startTubeRightPos = {startTubeRightPos}
+                startTubeDownPos = {startTubeDownPos}
+                startTubeLeftPos = {startTubeLeftPos}
+                startTubeUpPos = {startTubeUpPos}
+                horizTubeScaleFactor = {horizTubeScaleFactor}
+                vertTubeScaleFactor = {vertTubeScaleFactor}
             />
         );     
     }
@@ -56,6 +98,7 @@ const Tortoise = () => {
         }
         graph[0][0] = createNode(shapePosition);
         setCurGraph(graph);
+        setCloseCycleTube(<></>)
         setReset(true);        
     }
 
@@ -69,7 +112,7 @@ const Tortoise = () => {
         }
         graph.push(nodeArr);
     }
-    graph[0][0] = createNode(shapePosition);
+    graph[0][0] = createNode(shapePosition, "", {r: 0, c: 0});
 
     return (
         <>
@@ -90,7 +133,8 @@ const Tortoise = () => {
                             reset = {reset}
                             setReset = {setReset}
                         />
-                           {curGraph}
+                        {curGraph}
+                        {closeCycleTube}
                     </Suspense>
                 </Canvas> 
             </section>

@@ -52,11 +52,12 @@ const Arrow = (props) => {
                 // Create node to the right
                 const newPos = [props.curNodePos[0]+(props.nodeC+1)*nodePosScaleFactor, 
                     props.curNodePos[1]+props.nodeR*nodePosScaleFactor, props.curNodePos[2]];            
-                const newNode = props.createNode(newPos);
+                const newNode = props.createNode(newPos, props.type, {r: -props.nodeR, c: props.nodeC+1});
                 props.setMoveDirection("right");
     
                 // Create node
-                props.addNode(newNode, -props.nodeR, props.nodeC+1);
+                props.addNode(newNode, -props.nodeR, props.nodeC+1, (graph[-props.nodeR][props.nodeC+1] !== null), 
+                    props.type);
     
                 props.setNodeC(props.nodeC+1);
                 props.setNodeR(props.nodeR);
@@ -69,11 +70,12 @@ const Arrow = (props) => {
                 // Create node to downwards direction
                 const newPos = [props.curNodePos[0]+props.nodeC*nodePosScaleFactor,
                     props.curNodePos[1]+(props.nodeR-1)*nodePosScaleFactor, props.curNodePos[2]];            
-                const newNode = props.createNode(newPos);
+                const newNode = props.createNode(newPos, props.type, {r: -(props.nodeR-1), c: props.nodeC});
                 props.setMoveDirection("down");
     
                 // Create node
-                props.addNode(newNode, -(props.nodeR-1), props.nodeC);
+                props.addNode(newNode, -(props.nodeR-1), props.nodeC, (graph[-props.nodeR+1][props.nodeC] !== null), 
+                    props.type);
     
                 props.setNodeC(props.nodeC);
                 props.setNodeR(props.nodeR-1);
@@ -86,12 +88,13 @@ const Arrow = (props) => {
                 // Create node to the right
                 const newPos = [props.curNodePos[0]+(props.nodeC-1)*nodePosScaleFactor, 
                     props.curNodePos[1]+props.nodeR*nodePosScaleFactor, props.curNodePos[2]];            
-                const newNode = props.createNode(newPos);
+                const newNode = props.createNode(newPos, props.type, {r: -props.nodeR, c: props.nodeC-1});
                 props.setMoveDirection("left");
     
                 // Create node
-                props.addNode(newNode, -props.nodeR, props.nodeC-1);
-    
+                props.addNode(newNode, -props.nodeR, props.nodeC-1, (graph[-props.nodeR][props.nodeC-1] !== null), 
+                    props.type);
+
                 props.setNodeC(props.nodeC-1);
                 props.setNodeR(props.nodeR);
             } else if (props.type === "up") {
@@ -103,16 +106,16 @@ const Arrow = (props) => {
                 // Create node to downwards direction
                 const newPos = [props.curNodePos[0]+props.nodeC*nodePosScaleFactor,
                     props.curNodePos[1]+(props.nodeR+1)*nodePosScaleFactor, props.curNodePos[2]];            
-                const newNode = props.createNode(newPos);
+                const newNode = props.createNode(newPos, props.type, {r: -(props.nodeR+1), c: props.nodeC});
                 props.setMoveDirection("up");
     
                 // Create node
-                props.addNode(newNode, -(props.nodeR+1), props.nodeC);
+                props.addNode(newNode, -(props.nodeR+1), props.nodeC, (graph[-props.nodeR-1][props.nodeC] !== null), 
+                    props.type);
     
                 props.setNodeC(props.nodeC);
                 props.setNodeR(props.nodeR+1);
             }
-            console.log(props.nodeR, props.nodeC);
         }
     }
 
