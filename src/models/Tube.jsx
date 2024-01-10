@@ -3,9 +3,10 @@ import { useGLTF } from "@react-three/drei";
 import tube from '../assets/3d/shapes/tube.glb';
 import {a} from '@react-spring/three';
 
-const Tube2 = (props) => {
+const Tube = (props) => {
     const tubeRef = useRef();
     const { nodes, materials } = useGLTF(tube);
+    console.log(props.new_pos);
     return (
         <>
             <a.group ref={tubeRef} {...props}>
@@ -13,10 +14,10 @@ const Tube2 = (props) => {
                     <mesh
                     geometry={nodes.Plane_Material_0.geometry}
                     material={materials.Material}
-                    position={[104.446, 181.849, 92.489]}
-                    rotation={[Math.PI, 0, 0]}
-                    scale={[487.414, 100, 100]}
-                    visible={props.appear}
+                    position={props.new_pos}
+                    rotation={props.new_rot}
+                    scale={[200.414, 30, 100]}
+                    visible={props.appear}                    
                     />
                 </group>
             </a.group>
@@ -26,4 +27,4 @@ const Tube2 = (props) => {
     );
 }
 
-export default Tube2;
+export default Tube;

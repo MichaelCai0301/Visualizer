@@ -11,7 +11,6 @@ const Arrow = (props) => {
     const [graph, setGraph] = graphComponents;
     const { nodes, materials } = useGLTF(arrow);
     const [hovered, setHovered] = useState(0);
-    
 
     const nodePosScaleFactor = 300;
     const arrowPosScaleFactor = 1.5;
@@ -21,13 +20,13 @@ const Arrow = (props) => {
 
     useEffect(() => {
         // Shift arrow positions when new node is created
-        if (props.moveDirection == "right") {
+        if (props.moveDirection === "right") {
             arrowRef.current.position.x += arrowPosScaleFactor;
-        } else if (props.moveDirection == "left") {
+        } else if (props.moveDirection === "left") {
             arrowRef.current.position.x -= arrowPosScaleFactor;
-        } else if (props.moveDirection == "up") {
+        } else if (props.moveDirection === "up") {
             arrowRef.current.position.y += arrowPosScaleFactor;
-        } else if (props.moveDirection == "down") {
+        } else if (props.moveDirection === "down") {
             arrowRef.current.position.y -= arrowPosScaleFactor;
         }
         props.setMoveDirection("");
@@ -43,6 +42,7 @@ const Arrow = (props) => {
 
     const handleClick = (e) => {
         if (props.appear) {
+            // console.log(props.type)
             if (props.type === "right") {
                 // If moving into existing node
                 if (graph[-props.nodeR][props.nodeC+1] !== null) {
@@ -66,7 +66,7 @@ const Arrow = (props) => {
                 if (graph[-props.nodeR+1][props.nodeC] !== null) {
                     props.setDone(true);
                 }
-                
+                console.log(props.moveDirection);
                 // Create node to downwards direction
                 const newPos = [props.curNodePos[0]+props.nodeC*nodePosScaleFactor,
                     props.curNodePos[1]+(props.nodeR-1)*nodePosScaleFactor, props.curNodePos[2]];            
@@ -84,7 +84,7 @@ const Arrow = (props) => {
                 if (graph[-props.nodeR][props.nodeC-1] !== null) {
                     props.setDone(true);
                 }
-                
+                console.log(props.moveDirection);
                 // Create node to the right
                 const newPos = [props.curNodePos[0]+(props.nodeC-1)*nodePosScaleFactor, 
                     props.curNodePos[1]+props.nodeR*nodePosScaleFactor, props.curNodePos[2]];            
@@ -102,7 +102,7 @@ const Arrow = (props) => {
                 if (graph[-props.nodeR-1][props.nodeC] !== null) {
                     props.setDone(true);
                 }
-                
+                console.log(props.moveDirection);
                 // Create node to downwards direction
                 const newPos = [props.curNodePos[0]+props.nodeC*nodePosScaleFactor,
                     props.curNodePos[1]+(props.nodeR+1)*nodePosScaleFactor, props.curNodePos[2]];            
