@@ -21,7 +21,6 @@ const Tube = (props) => {
                     />
                 </group>
             </a.group>
-            
         </>
         
     );

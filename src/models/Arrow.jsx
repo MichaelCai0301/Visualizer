@@ -131,7 +131,7 @@ const Arrow = (props) => {
                 onClick={handleClick}
                 visible={props.appear}
             >
-                <meshPhongMaterial emissive={0x59571A} emissiveIntensity={hovered == 1 ? 4 : 0} />
+                <meshPhongMaterial emissive={hovered == 1 ?  0x0a8505: 0x949494} emissiveIntensity={hovered == 1 ? 4 : 1} color={0x969696}/>
             </mesh>
         </a.group>
     );
