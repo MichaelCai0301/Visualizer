@@ -28,7 +28,6 @@ const Node = (props) => {
     else if (props.direction === "down") position = startTubeUpPos
     position[0] += props.nodeCoords.c * horizTubeScaleFactor;
     position[1] -= props.nodeCoords.r * vertTubeScaleFactor;
-    console.log(position);
 
     var new_pos = props.new_posRight;
     var new_rot = props.new_rotHoriz;

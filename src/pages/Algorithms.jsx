@@ -66,10 +66,8 @@ const Algorithms = () => {
                                 {...shapeProps}
                                 navigateFunction = {(type) => {
                                     if (type === "tortoise") {
-                                        console.log('tortoise');
                                         navigate("/tortoise-and-hare");
                                     } else if (type === "dutch") {
-                                        console.log('dutch');
                                         navigate("/algorithms");
                                     } else {
                                         console.log('nothing');

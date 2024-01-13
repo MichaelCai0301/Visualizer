@@ -6,7 +6,7 @@ import {a} from '@react-spring/three';
 const Tube = (props) => {
     const tubeRef = useRef();
     const { nodes, materials } = useGLTF(tube);
-    console.log(props.new_pos);
+
     return (
         <>
             <a.group ref={tubeRef} {...props}>

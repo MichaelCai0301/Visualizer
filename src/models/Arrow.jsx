@@ -66,7 +66,6 @@ const Arrow = (props) => {
                 if (graph[-props.nodeR+1][props.nodeC] !== null) {
                     props.setDone(true);
                 }
-                console.log(props.moveDirection);
                 // Create node to downwards direction
                 const newPos = [props.curNodePos[0]+props.nodeC*nodePosScaleFactor,
                     props.curNodePos[1]+(props.nodeR-1)*nodePosScaleFactor, props.curNodePos[2]];            
@@ -84,7 +83,6 @@ const Arrow = (props) => {
                 if (graph[-props.nodeR][props.nodeC-1] !== null) {
                     props.setDone(true);
                 }
-                console.log(props.moveDirection);
                 // Create node to the right
                 const newPos = [props.curNodePos[0]+(props.nodeC-1)*nodePosScaleFactor, 
                     props.curNodePos[1]+props.nodeR*nodePosScaleFactor, props.curNodePos[2]];            
@@ -102,7 +100,6 @@ const Arrow = (props) => {
                 if (graph[-props.nodeR-1][props.nodeC] !== null) {
                     props.setDone(true);
                 }
-                console.log(props.moveDirection);
                 // Create node to downwards direction
                 const newPos = [props.curNodePos[0]+props.nodeC*nodePosScaleFactor,
                     props.curNodePos[1]+(props.nodeR+1)*nodePosScaleFactor, props.curNodePos[2]];            

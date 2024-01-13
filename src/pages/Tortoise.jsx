@@ -7,14 +7,37 @@ import Node from '../models/Node';
 import graphComponents from '../components/graph';
 import ArrowSet from '../components/ArrowSet';
 import removeGif from '../assets/remove.gif';
+import playGif from '../assets/play.gif';
+import playingGif from '../assets/playing.gif';
+import hare from '../assets/b.gif';
+import turtle from '../assets/t.gif';
+import {Html} from '@react-three/drei';
+
 import Tube from '../models/Tube';
+
+
+class LinkedNode {
+  constructor(r,c) {
+    this.next = null;
+    this.r=r;
+    this.c=c;
+  }
+  addNeighbor(neighborNode) {
+    this.next = neighborNode;
+  }
+}
+
+
 const Tortoise = () => {
-    // Universal graph
+    // Universal graph/linkedlist
     const [graph, setGraph] = graphComponents;
     const [curGraph, setCurGraph] = useState(graph);
+    const [linkedNodes, setLinkedNodes] = useState(graph);
     const [done, setDone] = useState(false);
     const [reset, setReset] = useState(false);
     const [closeCycleTube, setCloseCycleTube] = useState(<></>);
+    const [playing, setPlaying] = useState(false);
+    const root = new LinkedNode(0,0);
 
     // Directions describe the NODES, not the tube direction
     const vertTubeRotation = [0,0.5,1.6];
@@ -49,6 +72,13 @@ const Tortoise = () => {
     const [shapeScale, shapePosition, shapeRotation] = scaleToScreenSize();
 
     const addNode = (node, r, c, done, direction) => {
+        const newNode = new LinkedNode(r,c);
+        const newNodes = [...linkedNodes.map(row=>[...row])];
+        // Initialize root node if necessary
+        if (newNodes[0][0].next === undefined) { // LinkedNodes have .next initialized to null
+            newNodes[0][0] = root;
+        }
+        
         if (done) {
             // Prevent overriding existing node when cycle is completed
             const rotation = direction === "right" || direction === "left" ? horizTubeRotation : vertTubeRotation;
@@ -59,18 +89,27 @@ const Tortoise = () => {
             position[0] += c * horizTubeScaleFactor;
             position[1] -= r * vertTubeScaleFactor;
 
+            // Initialize position, rotation of tube, and neighbor of last node
             var new_pos = new_posRight;
             var new_rot = new_rotHoriz;
+            var new_neighbor = newNodes[r][c];
             if (direction === "left") {
                 new_pos = new_posLeft;
                 new_rot = new_rotHoriz;
+                console.log(c-1, new_neighbor);
+                newNodes[r][c+1].addNeighbor(new_neighbor);
             } else if (direction === "up") {
                 new_pos = new_posUp;
                 new_rot = new_rotVert;
+                newNodes[r+1][c].addNeighbor(new_neighbor);
             } else if (direction === "down") {
                 new_pos = new_posDown;
                 new_rot = new_rotVert;
+                newNodes[r-1][c].addNeighbor(new_neighbor);
+            } else if (direction === "right") {
+                newNodes[r][c-1].addNeighbor(new_neighbor);
             }
+            
 
             setCloseCycleTube(
                 <Tube
@@ -86,10 +125,34 @@ const Tortoise = () => {
         } else {
             const newGraph = [...graph.map(row => [...row])];
             newGraph[r][c] = node; // Overrides node space
-            graph[r][c] = node;        
+            graph[r][c] = node;
             setCurGraph(newGraph);
+
+            // Initialize node
+            newNodes[r][c] = newNode;
+
+            // Initialize prev neighbor node
+            if (direction === "left") {
+                console.log("l", newNodes[r][c+1], newNodes[r][c]);
+                newNodes[r][c+1].addNeighbor(newNodes[r][c]);
+            } else if (direction === "right") {
+                console.log("r", newNodes[r][c-1], newNodes[r][c]);
+                newNodes[r][c-1].addNeighbor(newNodes[r][c]);
+            } else if (direction === "up") {
+                console.log("u", newNodes[r+1][c], newNodes[r][c]);
+                newNodes[r+1][c].addNeighbor(newNodes[r][c]);
+            } else if (direction === "down") {
+                console.log("d", newNodes[r+1][c], newNodes[r][c]);
+                newNodes[r-1][c].addNeighbor(newNodes[r][c]);
+            }
         }
+        // Update set of nodes
+        setLinkedNodes(newNodes);
     }
+
+    useEffect(() => {
+        console.log('L', linkedNodes);
+    }, [linkedNodes]);
 
     const createNode = (nodePos, direction, nodeCoords) => {
         return (
@@ -133,6 +196,13 @@ const Tortoise = () => {
         setReset(true);        
     }
 
+    const play = () => {
+        setPlaying(true);
+        setTimeout(() => {
+           setPlaying(false);
+        }, 2000);
+    }
+
     // Initialize graph
     for (let r = 0; r < 7; r++) {
         let nodeArr = [];
@@ -148,13 +218,30 @@ const Tortoise = () => {
     return (
         <>
             <img src={removeGif} className="remove-btn" alt="loading..." onClick={resetGraph}/>
+            <img src={playing ? playingGif : playGif} className={playing ? 'playing-btn' : "remove-btn"} alt="loading..." onClick={play}/>
             <div className='remove-btn-txt'>RESET GRAPH</div>
-            <section className='w-full h-screen relative'>
+            <div className={playing ? "playing-txt" : "play-txt"}>{playing ? "PLAYING..." : "PLAY"}</div>
+            <section className='w-full h-screen relative'>            
                 <Canvas className="w-full h-screen bg-transparent" camera={{near: 0.1, far:1000}}>
                     <Suspense fallback={<Loader/>}>
                         <directionalLight position={[1,1,1]} intensity={2}/>
                         <ambientLight intensity={0.5}/>
                         <hemisphereLight skyColor="#b1e1ff" groundColor="#000000" intensity={1} />
+                        {/* Change to 3d gif to add scaling? */}
+                        <Html
+                            position={[-4.5,3.7,0]}
+                            >
+                                <img src={hare} 
+                                alt="loading..."
+                            />
+                        </Html>
+                        <Html
+                            position={[-4.5,3,0]}
+                            >
+                                <img src={turtle} 
+                                alt="loading..."
+                            />
+                        </Html>
                         <ArrowSet
                             createNode = {createNode}
                             addNode = {addNode}
