@@ -46,6 +46,7 @@ const ArrowSet = (props) => {
         
     }, [props.graph])
 
+
     // Reset arrows + node position if graph is reset
     useEffect(() => {
         setAppearUp(false);
@@ -88,21 +89,21 @@ const ArrowSet = (props) => {
                 position={startArrowDownPos}
                 rotation={downArrowRotation}
                 type = {'down'} 
-                appear={appearDown}
+                appear={appearDown && !props.playing && !props.turtPlay}
                 {...arrowProps}
             />
             <Arrow 
                 position={startArrowRightPos}
                 rotation={rightArrowRotation}
                 type = {'right'} 
-                appear={appearRight}
+                appear={appearRight && !props.playing && !props.turtPlay}
                 {...arrowProps}            
             />
             <Arrow 
                 position={startArrowUpPos}
                 rotation={upArrowRotation}
                 type = {'up'} 
-                appear={appearUp}
+                appear={appearUp && !props.playing && !props.turtPlay}
                 setAppear = {setAppearUp}
                 {...arrowProps}
             />
@@ -110,7 +111,7 @@ const ArrowSet = (props) => {
                 position={startArrowLeftPos}
                 rotation={leftArrowRotation}
                 type = {'left'} 
-                appear={appearLeft}
+                appear={appearLeft && !props.playing && !props.turtPlay}
                 setAppear = {setAppearLeft}
                 {...arrowProps}
             />

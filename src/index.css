@@ -128,6 +128,10 @@ main, .hide-background {
 .remove-btn:hover {
   opacity: 50%;
 }
+.remove-disabled {
+  width: 10%;
+  opacity: 50%;
+}
 .playing-btn {
   width: 10%;
   opacity: 50%;
@@ -150,17 +154,11 @@ main, .hide-background {
   font-size: 1.25vw;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-.turtle {
+.cycle-result {
   position: absolute;
-  padding-left: 4%;
-  padding-top: 0%;
-  width: 10%;
-  z-index: 1;
-}
-.hare {
-  /* position: absolute; */
-  /* padding-left: 4%; */
-  /* padding-top: 10%; */
-  scale: [0,0,0];
-  /* z-index: 1; */
+  padding-left: 30%;
+  padding-top: 3%;
+  font-size: 4vw;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bolder;
 }
