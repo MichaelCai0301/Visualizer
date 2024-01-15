@@ -53,7 +53,7 @@ const Octahedron = (props) => {
                 onPointerEnter={() => props.setHovered(1)}
                 onPointerLeave={() => props.setHovered(0)}
             >
-                <meshPhongMaterial emissive={0x59571A} emissiveIntensity={props.hovered == 1 ? 4 : 0}/>
+                <meshPhongMaterial emissive={props.color} emissiveIntensity={props.hovered == 1 ? 4 : 0}/>
             </mesh>
         </a.group>
     );

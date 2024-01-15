@@ -48,7 +48,7 @@ const Cuboctahedron = (props) => {
                 onPointerEnter={() => props.setHovered(2)}
                 onPointerLeave={() => props.setHovered(0)}
             >
-                <meshPhongMaterial emissive={0xFF00F7} emissiveIntensity={props.hovered == 2 ? 4 : 0}/>
+                <meshPhongMaterial emissive={props.color} emissiveIntensity={props.hovered == 2 ? 4 : 0}/>
             </mesh>
         </a.group>
     );
