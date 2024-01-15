@@ -122,3 +122,43 @@ main, .hide-background {
 .algo-title:hover {
   color: #ffa8fc;
 }
+.remove-btn {
+  width: 10%;
+}
+.remove-btn:hover {
+  opacity: 50%;
+}
+.remove-disabled {
+  width: 10%;
+  opacity: 50%;
+}
+.playing-btn {
+  width: 10%;
+  opacity: 50%;
+}
+.remove-btn-txt {
+  position: absolute;
+  padding-left: 1%;
+  font-size: 1.25vw;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.play-txt {
+  position: absolute;
+  padding-left: 13%;
+  font-size: 1.25vw;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.playing-txt {
+  position: absolute;
+  padding-left: 12%;
+  font-size: 1.25vw;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.cycle-result {
+  position: absolute;
+  padding-left: 30%;
+  padding-top: 3%;
+  font-size: 4vw;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bolder;
+}

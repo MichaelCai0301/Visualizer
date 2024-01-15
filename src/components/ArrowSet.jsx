@@ -10,11 +10,11 @@ const ArrowSet = (props) => {
     const downArrowRotation = [0.3, 0.1, 3.5];
     const rightArrowRotation = [0, 0.47, 5.1];
     const upArrowRotation = [0.1, -0.1, 6.65];
-    const arrowScale = [3,3,3];
-    const startArrowRightPos = [-1.6,2.9,0];
-    const startArrowDownPos = [-2.5,2.1,0];
-    const startArrowLeftPos = [-3.4,3,0];
-    const startArrowUpPos = [-2.5,3.9,0];
+    const arrowScale = [1.5,1.5,1.5];
+    const startArrowRightPos = [-1.7,3,0];
+    const startArrowDownPos = [-2.5,2.2,0];
+    const startArrowLeftPos = [-3.3,3,0];
+    const startArrowUpPos = [-2.52,3.78,0];
 
     const shapePosition = [-500, 500, -1063];
 
@@ -46,12 +46,22 @@ const ArrowSet = (props) => {
         
     }, [props.graph])
 
+
+    // Reset arrows + node position if graph is reset
+    useEffect(() => {
+        setAppearUp(false);
+        setAppearLeft(false);
+        setNodeC(0);
+        setNodeR(0);
+    }, [props.reset])
+
     useEffect(() => {
         if (props.done) {
             setAppearLeft(false);
             setAppearRight(false);
             setAppearDown(false);
             setAppearUp(false);
+            props.setDone(false);
         }
     }, [props.done])
 
@@ -68,7 +78,9 @@ const ArrowSet = (props) => {
         setNodeR: setNodeR,
         setNodeC: setNodeC,
         done: props.done,
-        setDone: props.setDone
+        setDone: props.setDone,
+        reset: props.reset,
+        setReset: props.setReset,
     };
 
     return (
@@ -77,28 +89,30 @@ const ArrowSet = (props) => {
                 position={startArrowDownPos}
                 rotation={downArrowRotation}
                 type = {'down'} 
-                appear={appearDown}
+                appear={appearDown && !props.playing && !props.turtPlay}
                 {...arrowProps}
             />
             <Arrow 
                 position={startArrowRightPos}
                 rotation={rightArrowRotation}
                 type = {'right'} 
-                appear={appearRight}
+                appear={appearRight && !props.playing && !props.turtPlay}
                 {...arrowProps}            
             />
             <Arrow 
                 position={startArrowUpPos}
                 rotation={upArrowRotation}
                 type = {'up'} 
-                appear={appearUp}
+                appear={appearUp && !props.playing && !props.turtPlay}
+                setAppear = {setAppearUp}
                 {...arrowProps}
             />
             <Arrow 
                 position={startArrowLeftPos}
                 rotation={leftArrowRotation}
                 type = {'left'} 
-                appear={appearLeft}
+                appear={appearLeft && !props.playing && !props.turtPlay}
+                setAppear = {setAppearLeft}
                 {...arrowProps}
             />
         </>
