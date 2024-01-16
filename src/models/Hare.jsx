@@ -13,11 +13,9 @@ const Hare = (props) => {
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             if (firstNode.next) {
                 (function loop(i,curNode) {
-                    console.log(curNode,i);
                     if (props.result.length > 0 || i >= 50 || curNode == null) {
                         delay(1000).then(() => {
                             props.setPos([-1,-1]);
-                            console.log("A");
                             props.setReachedEnd(true);
                             props.setPlaying(false);
                         });
@@ -31,10 +29,8 @@ const Hare = (props) => {
                             if (curNode.next == null) {
                                 delay(1000).then(() => {
                                     props.setPos([-1,-1]);
-                                    console.log("Aa");
                                     props.setReachedEnd(true);
                                     props.setPlaying(false);
-                                    console.log(props.playing, props.reachedEnd);
                                 });
                                 return;
                             }
@@ -44,7 +40,6 @@ const Hare = (props) => {
                 })(0,firstNode.next.next); // start by visiting root.next (already visited root node)
             }
             else {
-                console.log("Aaaa");
                 props.setReachedEnd(true);
                 props.setPlaying(false);
             }
