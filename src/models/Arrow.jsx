@@ -2,13 +2,12 @@ import { useRef, useEffect, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import arrow from '../assets/3d/shapes/arrow.glb';
 import {a} from '@react-spring/three';
-import graphComponents from '../components/graph';
+import grid from '../components/grid';
 import {Html} from '@react-three/drei';
 
 
 const Arrow = (props) => {
     const arrowRef = useRef();
-    const [graph, setGraph] = graphComponents;
     const { nodes, materials } = useGLTF(arrow);
     const [hovered, setHovered] = useState(0);
 
@@ -32,7 +31,7 @@ const Arrow = (props) => {
         props.setMoveDirection("");
     }, [props.moveDirection])
 
-    // Reset arrows if graph is reset
+    // Reset arrows if grid is reset
     useEffect(() => {
         arrowRef.current.position.x = props.position[0];
         arrowRef.current.position.y = props.position[1];
@@ -45,7 +44,7 @@ const Arrow = (props) => {
             // console.log(props.type)
             if (props.type === "right") {
                 // If moving into existing node
-                if (graph[-props.nodeR][props.nodeC+1] !== null) {
+                if (grid[-props.nodeR][props.nodeC+1] !== null) {
                     props.setDone(true);
                 }
 
@@ -56,14 +55,14 @@ const Arrow = (props) => {
                 props.setMoveDirection("right");
     
                 // Create node
-                props.addNode(newNode, -props.nodeR, props.nodeC+1, (graph[-props.nodeR][props.nodeC+1] !== null), 
+                props.addNode(newNode, -props.nodeR, props.nodeC+1, (grid[-props.nodeR][props.nodeC+1] !== null), 
                     props.type);
     
                 props.setNodeC(props.nodeC+1);
                 props.setNodeR(props.nodeR);
             } else if (props.type === "down") {
                 // If moving into existing node
-                if (graph[-props.nodeR+1][props.nodeC] !== null) {
+                if (grid[-props.nodeR+1][props.nodeC] !== null) {
                     props.setDone(true);
                 }
                 // Create node to downwards direction
@@ -73,14 +72,14 @@ const Arrow = (props) => {
                 props.setMoveDirection("down");
     
                 // Create node
-                props.addNode(newNode, -(props.nodeR-1), props.nodeC, (graph[-props.nodeR+1][props.nodeC] !== null), 
+                props.addNode(newNode, -(props.nodeR-1), props.nodeC, (grid[-props.nodeR+1][props.nodeC] !== null), 
                     props.type);
     
                 props.setNodeC(props.nodeC);
                 props.setNodeR(props.nodeR-1);
             } else if (props.type === "left") {
                 // If moving into existing node
-                if (graph[-props.nodeR][props.nodeC-1] !== null) {
+                if (grid[-props.nodeR][props.nodeC-1] !== null) {
                     props.setDone(true);
                 }
                 // Create node to the right
@@ -90,14 +89,14 @@ const Arrow = (props) => {
                 props.setMoveDirection("left");
     
                 // Create node
-                props.addNode(newNode, -props.nodeR, props.nodeC-1, (graph[-props.nodeR][props.nodeC-1] !== null), 
+                props.addNode(newNode, -props.nodeR, props.nodeC-1, (grid[-props.nodeR][props.nodeC-1] !== null), 
                     props.type);
 
                 props.setNodeC(props.nodeC-1);
                 props.setNodeR(props.nodeR);
             } else if (props.type === "up") {
                 // If moving into existing node
-                if (graph[-props.nodeR-1][props.nodeC] !== null) {
+                if (grid[-props.nodeR-1][props.nodeC] !== null) {
                     props.setDone(true);
                 }
                 // Create node to downwards direction
@@ -107,7 +106,7 @@ const Arrow = (props) => {
                 props.setMoveDirection("up");
     
                 // Create node
-                props.addNode(newNode, -(props.nodeR+1), props.nodeC, (graph[-props.nodeR-1][props.nodeC] !== null), 
+                props.addNode(newNode, -(props.nodeR+1), props.nodeC, (grid[-props.nodeR-1][props.nodeC] !== null), 
                     props.type);
     
                 props.setNodeC(props.nodeC);

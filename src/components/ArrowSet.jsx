@@ -30,24 +30,26 @@ const ArrowSet = (props) => {
     //! use -nodeR
 
     useEffect(() => {
+        console.log(nodeC, nodeR, props.grid.length, props.grid[0].length);
         // Delete arrows if necessary
-        if (nodeC == 0) {
+        if (nodeC <= 0) {
             setAppearLeft(false);
         } else setAppearLeft(true);
-        if (nodeC == props.graph[0].length) {
+        if (nodeC >= props.MAXGRIDWIDTH-1) {
             setAppearRight(false);
         } else setAppearRight(true);
-        if (nodeR == props.graph[0].length) {
+        if (-nodeR >= props.MAXGRIDHEIGHT-1) {
+            console.log(nodeR, props.grid.length);
             setAppearDown(false);
         } else setAppearDown(true);
-        if (nodeR == 0) {
+        if (-nodeR <= 0) {
             setAppearUp(false);
         } else setAppearUp(true);
         
-    }, [props.graph])
+    }, [props.grid])
 
 
-    // Reset arrows + node position if graph is reset
+    // Reset arrows + node position if grid is reset
     useEffect(() => {
         setAppearUp(false);
         setAppearLeft(false);

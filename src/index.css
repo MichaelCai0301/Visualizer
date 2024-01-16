@@ -107,20 +107,26 @@ main, .hide-background {
   position: absolute;
   display: flex;
   flex-direction: column;
-   justify-content: center;
+  justify-content: center;
   align-items: center;  
 }
 .algo-title {
   z-index: 10;
   white-space: nowrap;
+  font-size: 1.9vw;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: #d6d6d6;
 }
 .algo-title-selected {
   z-index: 10;
   white-space: nowrap;
   color: #ffa8fc;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 2.1vw;
 }
 .algo-title:hover {
   color: #ffa8fc;
+  font-size: 2.1vw;
 }
 .remove-btn {
   width: 10%;
@@ -161,4 +167,113 @@ main, .hide-background {
   font-size: 4vw;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: bolder;
+}
+.algo-header {
+  z-index: 10;
+  font-size: 3vw;
+  white-space: nowrap;
+  font-family:monospace;
+  font-weight: bold;
+  color: #f59fec;
+}
+.algo-subtitle {
+  z-index: 10;
+  font-size: 2vw;
+  white-space: nowrap;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: #b9a3b7;
+}
+.algo-description {
+  z-index: 10;
+  font-size: 1.5vw;
+  white-space: nowrap;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.algo-btn {
+  align-items: center;
+  background-color: #ababab;
+  color: #363636;
+  cursor: pointer;
+  fill: #000;
+  font-size: 2vw;
+  font-weight: 600;
+  justify-content: space-between;
+  width: 12.5vw;
+  min-width: 60px;
+  border: 2px solid #515151;
+  line-height: 3vw;
+  display: flex;
+  transition: all .1s;
+}
+.algo-btn:hover {
+  border-color:   rgb(152, 152, 152);
+  color: rgb(152, 152, 152);
+  background-color: #5a5a5a;
+  fill:rgb(255, 105, 250);
+}
+.algo-btn:hover svg {
+  transition: 0.3s;
+  fill:rgb(255, 105, 250);
+}
+.algo-btn:active {
+  border-color: hsl(300, 100%, 89%);
+  color:  hsl(300, 100%, 89%);
+  fill: hsl(300, 100%, 89%);
+  background-color: #5e5e5e;
+}
+.algo-btn:active svg {
+  fill:rgb(255, 224, 243);
+  transition: 0.1s;
+}
+.back-btn {
+  align-items: center;
+  background-color: #6f6f6f;
+  color: #a9a9a9;
+  cursor: pointer;
+  fill: #dddddd;
+  font-size: 2vw;
+  font-weight: 600;
+  justify-content: space-between;
+  width: 12.5vw;
+  min-width: 60px;
+  border: 2px solid #9e9e9e;
+  line-height: 3vw;
+  display: flex;
+  transition: all .1s;
+}
+.back-btn:hover {
+  opacity: 30%;
+}
+.back-btn svg{
+  fill: #adadad;
+}
+.back-btn:hover svg {
+  transition: 0.3s;
+  fill:rgb(247, 148, 216);
+}
+.back-btn:active {
+  border-color: hsl(0, 0%, 100%);
+  color:  hsl(0, 0%, 100%);
+  fill: hsl(0, 0%, 100%);
+  background-color: #5e5e5e;
+}
+svg {
+  fill:#363636
+}
+.algo-btn-disabled {
+  align-items: center;
+  background-color: #ababab;
+  color: #363636;
+  cursor: pointer;
+  fill: #000;
+  font-size: 2vw;
+  font-weight: 600;
+  justify-content: space-between;
+  width: 12.5vw;
+  min-width: 60px;
+  border: 2px solid #515151;
+  line-height: 3vw;
+  display: flex;
+  opacity: 40%;
 }

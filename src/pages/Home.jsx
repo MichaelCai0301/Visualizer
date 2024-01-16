@@ -61,10 +61,12 @@ const Home = () => {
                         <hemisphereLight skyColor="#b1e1ff" groundColor="#000000" intensity={1} />
                             <Cuboctahedron 
                                 position={[50, -80.5, -243]}
+                                color={0xFF00F7}
                                 {...shapeProps}
                             />
                             <Octahedron 
                                 position={shapePosition}
+                                color={0x59571A}
                                 {...shapeProps}
                                 navigateFunction = {(type) => {
                                     if (type === "Statistics") {
