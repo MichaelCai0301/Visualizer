@@ -3,7 +3,6 @@ import { useGLTF } from "@react-three/drei";
 import arrow from '../assets/3d/shapes/arrow.glb';
 import {a} from '@react-spring/three';
 import grid from '../components/grid';
-import {Html} from '@react-three/drei';
 
 
 const Arrow = (props) => {
