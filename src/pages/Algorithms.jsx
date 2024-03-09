@@ -70,7 +70,7 @@ const Algorithms = () => {
                                     if (type === "tortoise") {
                                         navigate("/tortoise-and-hare");
                                     } else if (type === "dijkstra") {
-                                        navigate("/algorithms");
+                                        navigate("/dijkstra");
                                     } else {
                                         console.log('nothing');
                                         navigate(0); // Refresh

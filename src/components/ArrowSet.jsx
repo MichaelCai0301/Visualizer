@@ -79,7 +79,6 @@ const ArrowSet = (props) => {
         nodeC: nodeC,
         setNodeR: setNodeR,
         setNodeC: setNodeC,
-        done: props.done,
         setDone: props.setDone,
         reset: props.reset,
         setReset: props.setReset,

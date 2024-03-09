@@ -234,6 +234,7 @@ const Tortoise = () => {
         }
     });
 
+    // Updated result when hare reached end of grid
     useEffect(()=>{
         if (reachedEnd && result.length == 0) {
             setReachedEnd(false);
@@ -241,6 +242,7 @@ const Tortoise = () => {
         }
     }, [reachedEnd])
 
+    // Begin simulation
     const play = () => {
         if (playing || turtPlay) return; // Can't play while already playing
         setResult("");
@@ -260,6 +262,7 @@ const Tortoise = () => {
     }
     grid[0][0] = createNode(shapePosition, "", {r: 0, c: 0});
 
+    // Update result when hare and tortoise meet
     useEffect(() => {
         if (resultCheckerMounted.current && harePos[0] == turtPos[0] && harePos[1] == turtPos[1]) {
             setResult("THERE IS A CYCLE!");
@@ -273,6 +276,7 @@ const Tortoise = () => {
         }
     }, [harePos, turtPos]);  
         
+    // Ensure tortoise and hare return to default positions once playing ends
     useEffect(() => {
         if (resultCheckerMounted.current && !playing) {
             // Reset/reposition hare/turt sprites by changing key
