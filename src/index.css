@@ -100,7 +100,9 @@ main, .hide-background {
   align-items: center; 
 }
 .algo-nav-background {
+  z-index: 8;
   background-color: rgb(104, 104, 104);
+  opacity: 85%;
   height: 100%;
   animation: slideIn-nav 1s ease-in-out;
   width: 20%;
@@ -109,6 +111,9 @@ main, .hide-background {
   flex-direction: column;
   justify-content: center;
   align-items: center;  
+}
+.algo-nav-background div {
+  white-space: nowrap;
 }
 .algo-title {
   z-index: 10;
@@ -196,7 +201,7 @@ main, .hide-background {
   color: #363636;
   cursor: pointer;
   fill: #000;
-  font-size: 2vw;
+  font-size: 1.5vw;
   font-weight: 600;
   justify-content: space-between;
   width: 12.5vw;
@@ -232,7 +237,7 @@ main, .hide-background {
   color: #a9a9a9;
   cursor: pointer;
   fill: #dddddd;
-  font-size: 2vw;
+  font-size: 1.5vw;
   font-weight: 600;
   justify-content: space-between;
   width: 12.5vw;
@@ -267,7 +272,7 @@ svg {
   color: #363636;
   cursor: pointer;
   fill: #000;
-  font-size: 2vw;
+  font-size: 1.5vw;
   font-weight: 600;
   justify-content: space-between;
   width: 12.5vw;

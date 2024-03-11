@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Graph from 'react-graph-vis'
 import graph from '../components/graph';
 import { Network } from 'vis-network';
+import AddIcon from '../assets/svg/add_svg';
+import CrossIcon from '../assets/svg/x_svg';
 // docs: https://visjs.github.io/vis-network/docs/network/#methodSelection
 // const events = {
 //     select: function(event) {
@@ -24,7 +26,6 @@ const options = {
         }
     }
     },
-    height: "500px"
 };
 
 
@@ -53,22 +54,56 @@ const Dijkstra = () => {
         setStartNode(null);
         setEndNode(null);
     }
+    const resetGraph = () => {
+        setDijGraph({nodes: [], edges: []})
+    }
     const handleChange = (event) => {
         setWeight(event.target.value);
     };
+    
     return (
+        
         <section className='w-full h-screen relative'>
-        <h1 onClick={addNode}>add node!</h1>
-        <h1 onClick={addEdge}>input a weight here, click 2 nodes, and then click here to add an edge btw those nodes!</h1>
-        <input
-            type="number"
-            value={weight}
-            onChange={handleChange}
-            placeholder="Enter a weight"
-        />
-        <h1>node 1: {startNode}</h1>
-        <h1>node 2: {endNode}</h1>
-        <h1>edge weight: {weight}</h1>
+            {/* NAVBAR */}
+            <div className='algo-nav-background'>
+                <div className='algo-header'>DIJKSTRA'S</div>
+                <div className='algo-header'>ALGORITHM</div>
+                <div className='algo-subtitle'>MST Finder</div>
+                <br/>
+                <div className='algo-description'>
+                    Click below to add a node! 
+                </div>
+                <button className={'algo-btn'} onClick={addNode}>
+                    Add Node {AddIcon}
+                </button>
+                <div className='algo-description'>
+                     Click on 2 nodes and  
+                </div>
+                <div className='algo-description'>
+                    add an edge between them!
+                </div>
+                <div>Node 1: {startNode}</div>
+                <div>Node 2: {endNode}</div>
+                <div>Edge Weight: </div>
+                <input
+                    type="number"
+                    value={weight}
+                    onChange={handleChange}
+                    placeholder="Enter a weight"
+                />
+                <button className={'algo-btn'} onClick={addEdge}>
+                    Add Edge {AddIcon}
+                </button>
+                <button className={'algo-btn'} onClick={resetGraph}>
+                    RESET {CrossIcon}
+                </button>
+                <div className='algo-description'>
+                    Press PLAY when ready to
+                </div>
+                <div className='algo-description'>
+                    execute Dijkstra's algorithm.
+                </div>
+            </div>
         <Graph 
             graph={dijGraph}
             options={options}
@@ -81,7 +116,6 @@ const Dijkstra = () => {
                     if (startNode === null) {
                         setStartNode(clickedNodeId);
                     } else if (endNode === null && startNode != clickedNodeId) {
-                        
                         setEndNode(clickedNodeId);
                     }
                   }
