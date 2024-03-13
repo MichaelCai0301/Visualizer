@@ -14,6 +14,7 @@ import CrossIcon from '../assets/svg/x_svg';
 //         console.log("AAA");
 //     }
 // };
+
 const options = {
     layout: {
     hierarchical: false
@@ -32,25 +33,57 @@ const options = {
 
 const Dijkstra = () => {
     const [dijGraph, setDijGraph] = useState(graph);
-    const [nNode, setNNode] = useState(5);
+    const [nNode, setNNode] = useState(0);
     const [startNode, setStartNode] = useState(null);
     const [endNode, setEndNode] = useState(null);
     const [weight, setWeight] = useState(0);
+    const [adjMatrix, setAdjMatrix] = useState([[0]]); // Adjacency matrix
+
     const addNode = () => {
         let curNodes = dijGraph.nodes;
         let curEdges = dijGraph.edges;
         let newNode = {id: nNode+1, label: "Node "+(nNode+1)};
         setDijGraph({nodes: [...curNodes, newNode], 
             edges: curEdges});
+
+        // Add to adjacency matrix
+        let newAdjMat = adjMatrix;
+        newAdjMat[0].push(nNode+1);
+        for (let i = 1; i < newAdjMat.length; i++) {
+            newAdjMat[i].push(Infinity);
+        }
+        let newRow = [];
+        for (let i = 0; i < newAdjMat[0].length; i++) newRow.push(Infinity);
+        newRow[0] = nNode+1;
+        newAdjMat.push(newRow);
+        setAdjMatrix(newAdjMat);
+        console.log(newAdjMat)
+
         setNNode(nNode+1);
     }
     const addEdge = () => {
         if (startNode === null || endNode === null) return;
+        if (adjMatrix[startNode][endNode] !== Infinity) {
+            alert("cant have 2 edges btw same nodes!");
+            setStartNode(null);
+            setEndNode(null);
+            return;
+        }
         let curNodes = dijGraph.nodes;
         let curEdges = dijGraph.edges;
         let newEdge = { from: startNode, to: endNode, label: ""+weight};
         setDijGraph({nodes: curNodes, 
             edges: [...curEdges,newEdge]});
+
+        // Add to adjacency matrix
+        if (startNode !== endNode) {
+            let newAdjMat = adjMatrix;
+            newAdjMat[startNode][endNode] = weight;
+            newAdjMat[endNode][startNode] = weight;
+            setAdjMatrix(newAdjMat);
+            console.log(newAdjMat);
+        }
+        
         setStartNode(null);
         setEndNode(null);
     }
@@ -68,7 +101,7 @@ const Dijkstra = () => {
             <div className='algo-nav-background'>
                 <div className='algo-header'>DIJKSTRA'S</div>
                 <div className='algo-header'>ALGORITHM</div>
-                <div className='algo-subtitle'>MST Finder</div>
+                <div className='algo-subtitle'>Shortest Path Finder</div>
                 <br/>
                 <div className='algo-description'>
                     Click below to add a node! 
