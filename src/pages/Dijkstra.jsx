@@ -17,6 +17,16 @@ import PlayIcon from '../assets/svg/play_svg';
 //     }
 // };
 
+class GraphNode {
+    constructor(val) {
+      this.neighbors = [];
+      this.val = val;
+    }
+    // addNeighbor(neighborNode) {
+    //   this.next = neighborNode;
+    // }
+}
+
 const options = {
     autoResize: true,
     layout: {
@@ -50,6 +60,10 @@ const Dijkstra = () => {
     const [graphOpt, setGraphOpt] = useState(options);
     const [simBegin, setSimBegin] = useState(null);
     const [simEnd, setSimEnd] = useState(null);
+    const [bfsQ, setBfsQ] = useState([]);
+    const [graphNodes, setGraphNodes] = useState(new Map());
+    const [iterate, setIterate] = useState(false);
+    const bfsVisited = new Map();
 
     const addNode = () => {
         if (playing) return;
@@ -68,9 +82,15 @@ const Dijkstra = () => {
         let newRow = [];
         for (let i = 0; i < newAdjMat[0].length; i++) newRow.push(Infinity);
         newRow[0] = nNode+1;
+        newRow[newRow.length-1] = 0;
         newAdjMat.push(newRow);
         setAdjMatrix(newAdjMat);
         console.log(newAdjMat)
+
+        // Add to graph
+        let newGraphNode = new GraphNode(nNode+1);
+        setGraphNodes(new Map(graphNodes.set(nNode+1, newGraphNode)));
+
 
         setNNode(nNode+1);
     }
@@ -98,6 +118,16 @@ const Dijkstra = () => {
             console.log(newAdjMat);
         }
 
+        // Add to graph
+        if (startNode !== endNode) {
+            let startGNode = graphNodes.get(startNode);
+            let endGNode = graphNodes.get(endNode);
+            startGNode.neighbors.push({node: endNode, weight: weight});
+            endGNode.neighbors.push({node: startNode, weight: weight});
+            setGraphNodes(new Map(graphNodes.set(startNode, startGNode)));
+            setGraphNodes(new Map(graphNodes.set(endNode, endGNode)));
+        }
+
         setStartNode(null);
         setEndNode(null);
     }
@@ -111,7 +141,7 @@ const Dijkstra = () => {
     };
     // Begin simulation
     const play = () => {
-        if (playing) return; // Can't play while already playing    
+        if (playing) return; // Can't play while already playing  
         alert('select 2 nodes');
         setGraphOpt({
             // clean this up? use in terms of 'option' variable
@@ -135,13 +165,127 @@ const Dijkstra = () => {
         });
         setPlaying(true);
     }
+    const [items, setItems] = useState([]);
+    const [visited, setVisited] = useState(new Map());
+
     // Begin Dijkstra's algorithm
     useEffect(()=> {
         if (simBegin !== null && simEnd !== null && playing) {
-            alert("PLAY");
+            setItems([simBegin]);
+            setVisited(new Map([[simBegin, true]]));
+            setIterate(true);
+            // handleAddItems();    
         }
+        // if (simBegin !== null && simEnd !== null && playing) {
+            // alert("PLAY");
+            // // setBfsQ([simBegin]);
+            
+            // const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+            // (function loop(i) {
+            //     if (i >= adjMatrix.length) {
+            //         delay(1000).then(() => {
+            //             // props.setPos([-1,-1]);
+            //             // props.setReachedEnd(true);
+            //             // props.setPlaying(false);
+            //             alert('done')
+            //         });
+            //         return;
+            //     } 
+            //     delay(1000).then(() => {
+            //         let cur = q[0];
+            //         if (i != cur && adjMatrix[i][cur] != Infinity && !visited.has(i)) {
+            //             q.push(i);
+            //             console.log(q,i,adjMatrix.length);
+            //             setBfsQ([...bfsQ, ...bfsQ, i]);
+            //         }
+            //         // loop(i+1);
+            //     });
+            // // })(1); // start by visiting root.next (already visited root node)
+            // // while (bfsQ.length > 0) {
+            // //     let cur = bfsQ[0];
+            // //     for (let i = 0; i < adjMatrix.length; i++) {
+            // //         if (i != cur && adjMatrix[i][cur] != Infinity && !bfsVisited.has(i)) {
+            // //             bfsVisited.set(i,true);
+            // //             // delay(1000).then(() => {
+            // //                 setBfsQ([...bfsQ, i]);
+            // //                 console.log(i);
+            // //             // });
+            // //         }
+            // //     }
+            // //     let [first, ...rest] = bfsQ;
+            // //     setBfsQ(rest);
+            // // }
+            // // console.log(bfsQ);
+            // // setBfsQ([]);
+            // // set map to empty
+        // }
     }, [simBegin, simEnd])
-    
+
+
+    const addItemWithDelay = (i) => {
+        setItems((prevItems) => {
+            let cur = prevItems[0];
+            if (i != cur && adjMatrix[i][cur] != Infinity && !visited.has(i)) {
+                return [...prevItems, i];
+            }
+            return prevItems;
+        });
+        setVisited((prevVisited) => new Map(prevVisited.set(i, true)));
+    };
+    const popItemWithDelay = () => {
+        setItems((prevItems) => {
+            let [first, ...rest] = prevItems;
+            return rest;
+        });
+    };
+    const handleAddItems = () => {
+        while (items.length > 0) {
+            console.log(graphNodes, simBegin);
+            let neighbors = graphNodes.get(simBegin).neighbors;
+            for (let i = 0; i < neighbors.length; i++) {
+                console.log(neighbors, "AAAAA0")
+                let neighbor = neighbors[i].node;
+                setTimeout(() => {
+                    addItemWithDelay(neighbor);
+                }, i * 1000);  // i * 1000 ensures a pause between each addition
+            }
+
+        }
+    };
+    useEffect(() => {
+        // bfs on the `items` list
+        console.log('items.length > 0 && iterate', items, iterate);
+        if (items.length > 0 && iterate) {
+            let neighbors = graphNodes.get(items[0]).neighbors;
+            for (let i = 0; i < neighbors.length; i++) {
+                let neighbor = neighbors[i].node;
+                setTimeout(() => {
+                    addItemWithDelay(neighbor);
+                }, (i+1) * 1000);  // i * 1000 ensures a pause between each addition
+            }
+            setTimeout(() => {
+                popItemWithDelay();
+            }, (neighbors.length+0.7) * 1000);
+            setTimeout(() => {
+                console.log("A", items);
+                setIterate(false);
+            }, (neighbors.length+0.8) * 1000);
+            setTimeout(() => { //! maybe use delay/wait for the setIterate(false) to finish and then setIterate(true) instead of
+                //! using setTimeout --> this may allow things to run more smoothly!
+                console.log("B", items);
+                setIterate(true);
+            }, (neighbors.length+0.9) * 1000);
+        } else if (items.length == 0 && iterate) {
+            alert("DONE")
+            setPlaying(false);
+            setGraphOpt(options);
+            setSimEnd(null);
+            setSimBegin(null);
+            setItems([]);
+            setIterate(false);
+        }
+    }, [iterate]);
+
     return (
         
         <section className='w-full h-screen relative'>
@@ -192,6 +336,7 @@ const Dijkstra = () => {
             </div>
             <div>{playing ? "BEGINNING NODE: " + (!simBegin ? "CLICK ON A NODE TO SELECT!" : simBegin) : ""}</div>
             <div>{playing ? "ENDING NODE: " + (!simEnd ? "CLICK ON A NODE TO SELECT!" : simEnd) : ""}</div>
+            <div>AAAAA {bfsQ} {""+items}</div>
             <Graph 
                 graph={dijGraph}
                 options={graphOpt}
