@@ -9,6 +9,7 @@ import AddIcon from '../assets/svg/add_svg';
 import CrossIcon from '../assets/svg/x_svg';
 import PlayingIcon from '../assets/svg/playing_svg';
 import PlayIcon from '../assets/svg/play_svg';
+import * as ENV from '../Constants'
 // docs: https://visjs.github.io/vis-network/docs/network/#methodSelection
 // const events = {
 //     select: function(event) {
@@ -69,7 +70,7 @@ const Dijkstra = () => {
         if (playing) return;
         let curNodes = dijGraph.nodes;
         let curEdges = dijGraph.edges;
-        let newNode = {id: nNode+1, label: "Node "+(nNode+1)};
+        let newNode = {id: nNode+1, label: "Node "+(nNode+1), color: ENV.COLORS.GRAPH_NODE};
         setDijGraph({nodes: [...curNodes, newNode], 
             edges: curEdges});
 
@@ -98,7 +99,7 @@ const Dijkstra = () => {
         if (playing) return;
         if (startNode === null || endNode === null) return;
         if (adjMatrix[startNode][endNode] !== Infinity) {
-            alert("cant have 2 edges btw same nodes!");
+            alert("cant have 2 edges btw same nodes!" + `${startNode}, ${endNode}`);
             setStartNode(null);
             setEndNode(null);
             return;
@@ -133,7 +134,9 @@ const Dijkstra = () => {
     }
     const resetGraph = () => {
         if (playing) return;
-        setDijGraph({nodes: [], edges: []})
+        setNNode(0);
+        setAdjMatrix([[0]])
+        setDijGraph({nodes: [], edges: []});
     }
     const handleChange = (event) => {
         if (playing) return;
@@ -172,6 +175,7 @@ const Dijkstra = () => {
     useEffect(()=> {
         if (simBegin !== null && simEnd !== null && playing) {
             setItems([simBegin]);
+            highlightNode(simBegin);
             setVisited(new Map([[simBegin, true]]));
             setIterate(true);
             // handleAddItems();    
@@ -232,26 +236,39 @@ const Dijkstra = () => {
         });
         setVisited((prevVisited) => new Map(prevVisited.set(i, true)));
     };
+
+    // popItemWithDelay () - pops first node on queue, adds that node's children to queue
+    //                       renders the changes by unhighlighting popped node and highlighting
+    //                       the next node.
+    // Doesn't use highlightNode since 2 nodes must be highlighted at once per state update
     const popItemWithDelay = () => {
         setItems((prevItems) => {
             let [first, ...rest] = prevItems;
+            // First, pop old node (idx at `first`)
+            var nodesLeft = dijGraph.nodes.slice(0, first-1); // this will create a copy with the same items
+            var selectedNode = dijGraph.nodes[first-1];
+            nodesLeft.push({id: selectedNode.id, 
+                    label: selectedNode.label,
+                    color: ENV.COLORS.GRAPH_NODE});
+            var nodesRight = dijGraph.nodes.slice(first);
+            var poppedGraph = {nodes: nodesLeft.concat(nodesRight), edges: dijGraph.edges};
+            var mutatedGraph = poppedGraph;
+            // Then, push new node (idx at `rest[0]`)
+            if (rest.length > 0) {
+                nodesLeft = poppedGraph.nodes.slice(0, rest[0]-1);
+                selectedNode = poppedGraph.nodes[rest[0]-1];
+                nodesLeft.push({id: selectedNode.id, 
+                    label: selectedNode.label,
+                    color: ENV.COLORS.GRAPH_NODE_HIGHLIGHTED});
+                nodesRight = poppedGraph.nodes.slice(rest[0]);
+                mutatedGraph = {nodes: nodesLeft.concat(nodesRight), edges: dijGraph.edges};
+            }
+            setDijGraph(mutatedGraph);
             return rest;
         });
     };
-    const handleAddItems = () => {
-        while (items.length > 0) {
-            console.log(graphNodes, simBegin);
-            let neighbors = graphNodes.get(simBegin).neighbors;
-            for (let i = 0; i < neighbors.length; i++) {
-                console.log(neighbors, "AAAAA0")
-                let neighbor = neighbors[i].node;
-                setTimeout(() => {
-                    addItemWithDelay(neighbor);
-                }, i * 1000);  // i * 1000 ensures a pause between each addition
-            }
 
-        }
-    };
+    
     useEffect(() => {
         // bfs on the `items` list
         console.log('items.length > 0 && iterate', items, iterate);
@@ -259,22 +276,20 @@ const Dijkstra = () => {
             let neighbors = graphNodes.get(items[0]).neighbors;
             for (let i = 0; i < neighbors.length; i++) {
                 let neighbor = neighbors[i].node;
-                setTimeout(() => {
+                // setTimeout(() => {
                     addItemWithDelay(neighbor);
-                }, (i+1) * 1000);  // i * 1000 ensures a pause between each addition
+                // }, (i+1) * 1000);  // i * 1000 ensures a pause between each addition
             }
             setTimeout(() => {
                 popItemWithDelay();
-            }, (neighbors.length+0.7) * 1000);
+            }, (neighbors.length+0.7) * 500);
             setTimeout(() => {
-                console.log("A", items);
                 setIterate(false);
-            }, (neighbors.length+0.8) * 1000);
+            }, (neighbors.length+0.8) * 500);
             setTimeout(() => { //! maybe use delay/wait for the setIterate(false) to finish and then setIterate(true) instead of
                 //! using setTimeout --> this may allow things to run more smoothly!
-                console.log("B", items);
                 setIterate(true);
-            }, (neighbors.length+0.9) * 1000);
+            }, (neighbors.length+0.9) * 500);
         } else if (items.length == 0 && iterate) {
             alert("DONE")
             setPlaying(false);
@@ -285,12 +300,44 @@ const Dijkstra = () => {
             setIterate(false);
         }
     }, [iterate]);
+    // ! replace all hex color instances with global variables???
+    const replaceNode = (nodeIdx, color=undefined, label=undefined) => {
+        var nodesLeft = dijGraph.nodes.slice(0, nodeIdx-1); // this will create a copy with the same items
+        var selectedNode = dijGraph.nodes[nodeIdx-1];
+        nodesLeft.push({id: selectedNode.id, 
+                label: label === undefined ? selectedNode.label : label,
+                color: color === undefined ? selectedNode.color : color});
+        var nodesRight = dijGraph.nodes.slice(nodeIdx);
+        setDijGraph({nodes: nodesLeft.concat(nodesRight), edges: dijGraph.edges});
+    }
+
+    const addVisualWeight = (nodeIdx, weight) => {
+        var oldLabel = dijGraph.nodes[nodeIdx-1].label;
+        replaceNode(nodeIdx, undefined, oldLabel + ` (${weight})`);
+    } 
+
+    const highlightNode = (nodeIdx, is_highlighted=true) => {
+        if (is_highlighted) {
+            replaceNode(nodeIdx, ENV.COLORS.GRAPH_NODE_HIGHLIGHTED);
+            console.log(`${nodeIdx} HIGHLIGHTED`)
+        } else {
+            replaceNode(nodeIdx, ENV.COLORS.GRAPH_NODE);
+            console.log(`${nodeIdx} UN-HIGHLIGHTED`)
+        }
+    } 
+
+    useEffect (() => {
+        console.log("UE", dijGraph);
+        setDijGraph(dijGraph);
+    }, [dijGraph])
 
     return (
         
         <section className='w-full h-screen relative'>
             {/* NAVBAR */}
             <div className='algo-nav-background'>
+                <button onClick={() => {if (true) highlightNode(1)}}>HIGHLTIE</button>
+                <button onClick={() => {if (true) addVisualWeight(1,1)}}> AAA</button>
                 <div className='algo-header'>DIJKSTRA'S</div>
                 <div className='algo-header'>ALGORITHM</div>
                 <div className='algo-subtitle'>Shortest Path Finder</div>
@@ -337,6 +384,7 @@ const Dijkstra = () => {
             <div>{playing ? "BEGINNING NODE: " + (!simBegin ? "CLICK ON A NODE TO SELECT!" : simBegin) : ""}</div>
             <div>{playing ? "ENDING NODE: " + (!simEnd ? "CLICK ON A NODE TO SELECT!" : simEnd) : ""}</div>
             <div>AAAAA {bfsQ} {""+items}</div>
+            
             <Graph 
                 graph={dijGraph}
                 options={graphOpt}
