@@ -64,7 +64,7 @@ const Dijkstra = () => {
     const [bfsQ, setBfsQ] = useState([]);
     const [graphNodes, setGraphNodes] = useState(new Map());
     const [iterate, setIterate] = useState(false);
-    const bfsVisited = new Map();
+    const [distances, setDistances] = useState(new Map());
 
     const addNode = () => {
         if (playing) return;
@@ -86,7 +86,6 @@ const Dijkstra = () => {
         newRow[newRow.length-1] = 0;
         newAdjMat.push(newRow);
         setAdjMatrix(newAdjMat);
-        console.log(newAdjMat)
 
         // Add to graph
         let newGraphNode = new GraphNode(nNode+1);
@@ -106,7 +105,7 @@ const Dijkstra = () => {
         }
         let curNodes = dijGraph.nodes;
         let curEdges = dijGraph.edges;
-        let newEdge = { from: startNode, to: endNode, label: ""+weight};
+        let newEdge = { from: startNode, to: endNode, label: `${weight}`};
         setDijGraph({nodes: curNodes, 
             edges: [...curEdges,newEdge]});
 
@@ -116,7 +115,6 @@ const Dijkstra = () => {
             newAdjMat[startNode][endNode] = weight;
             newAdjMat[endNode][startNode] = weight;
             setAdjMatrix(newAdjMat);
-            console.log(newAdjMat);
         }
 
         // Add to graph
@@ -138,13 +136,36 @@ const Dijkstra = () => {
         setAdjMatrix([[0]])
         setDijGraph({nodes: [], edges: []});
     }
+    const getRoot = (str) => {
+        let parenIdx = str.indexOf("(");
+        if (parenIdx > -1) {
+            str = str.substring(0, parenIdx);
+        }
+        return str;
+    }
     const handleChange = (event) => {
         if (playing) return;
-        setWeight(event.target.value);
+        setWeight(parseInt(event.target.value));
     };
     // Begin simulation
     const play = () => {
         if (playing) return; // Can't play while already playing  
+        if (nNode < 2) {
+            alert("Must have at least 2 nodes!")
+            return;
+        }
+        setVisited(new Map());
+        setDistances(new Map());
+        // Remove all displayed distances from previous run
+
+        setDijGraph({nodes: dijGraph.nodes.map((n) => {
+            let lab = n.label;
+            let distIdx = n.label.indexOf("(");
+            if (distIdx > -1)
+                lab = n.label.substring(0, distIdx);
+            return {id: n.id, label: lab, color: n.color}
+        }), edges: dijGraph.edges});
+        
         alert('select 2 nodes');
         setGraphOpt({
             // clean this up? use in terms of 'option' variable
@@ -168,79 +189,61 @@ const Dijkstra = () => {
         });
         setPlaying(true);
     }
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState([]); // items is basically the q
     const [visited, setVisited] = useState(new Map());
 
     // Begin Dijkstra's algorithm
     useEffect(()=> {
         if (simBegin !== null && simEnd !== null && playing) {
             setItems([simBegin]);
-            highlightNode(simBegin);
-            setVisited(new Map([[simBegin, true]]));
+            highlightNode(simBegin, 0);
+            setDistances(new Map([[simBegin, 0]]));
             setIterate(true);
             // handleAddItems();    
         }
-        // if (simBegin !== null && simEnd !== null && playing) {
-            // alert("PLAY");
-            // // setBfsQ([simBegin]);
-            
-            // const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-            // (function loop(i) {
-            //     if (i >= adjMatrix.length) {
-            //         delay(1000).then(() => {
-            //             // props.setPos([-1,-1]);
-            //             // props.setReachedEnd(true);
-            //             // props.setPlaying(false);
-            //             alert('done')
-            //         });
-            //         return;
-            //     } 
-            //     delay(1000).then(() => {
-            //         let cur = q[0];
-            //         if (i != cur && adjMatrix[i][cur] != Infinity && !visited.has(i)) {
-            //             q.push(i);
-            //             console.log(q,i,adjMatrix.length);
-            //             setBfsQ([...bfsQ, ...bfsQ, i]);
-            //         }
-            //         // loop(i+1);
-            //     });
-            // // })(1); // start by visiting root.next (already visited root node)
-            // // while (bfsQ.length > 0) {
-            // //     let cur = bfsQ[0];
-            // //     for (let i = 0; i < adjMatrix.length; i++) {
-            // //         if (i != cur && adjMatrix[i][cur] != Infinity && !bfsVisited.has(i)) {
-            // //             bfsVisited.set(i,true);
-            // //             // delay(1000).then(() => {
-            // //                 setBfsQ([...bfsQ, i]);
-            // //                 console.log(i);
-            // //             // });
-            // //         }
-            // //     }
-            // //     let [first, ...rest] = bfsQ;
-            // //     setBfsQ(rest);
-            // // }
-            // // console.log(bfsQ);
-            // // setBfsQ([]);
-            // // set map to empty
-        // }
     }, [simBegin, simEnd])
+
+    // ? do i need this????
+    useEffect(() => {
+        if (!playing) {
+            setVisited(new Map());
+            setDistances(new Map());
+        }
+    }, [playing])
 
 
     const addItemWithDelay = (i) => {
         setItems((prevItems) => {
             let cur = prevItems[0];
-            if (i != cur && adjMatrix[i][cur] != Infinity && !visited.has(i)) {
+            if (i != cur && adjMatrix[i][cur] != Infinity /*&& !visited.has(i)*/) {
                 return [...prevItems, i];
             }
             return prevItems;
         });
-        setVisited((prevVisited) => new Map(prevVisited.set(i, true)));
+        // Update the distances as per Dijkstra's algorithm
+        let dist = adjMatrix[i][items[0]] + distances.get(items[0]);
+        if (!distances.has(i) || dist < distances.get(i))  {
+            console.log("IS", items[0], i, dist)
+            setDistances((prevDistances) => new Map(prevDistances.set(i, dist)));
+            console.log("vv", visited)
+            console.log("dd", distances)
+        }
     };
+    useEffect(() => {
+        console.log('ADSFDIOJDFSDS', visited)
+    }, [visited])
 
     // popItemWithDelay () - pops first node on queue, adds that node's children to queue
     //                       renders the changes by unhighlighting popped node and highlighting
     //                       the next node.
     // Doesn't use highlightNode since 2 nodes must be highlighted at once per state update
+    const map_to_s_help = (m) => {
+        let s = "";
+        for (let k of m.keys()) {
+            s += `${k}: ${m[k]};  `
+        }
+        return s;
+    }
     const popItemWithDelay = () => {
         setItems((prevItems) => {
             let [first, ...rest] = prevItems;
@@ -253,17 +256,19 @@ const Dijkstra = () => {
             var nodesRight = dijGraph.nodes.slice(first);
             var poppedGraph = {nodes: nodesLeft.concat(nodesRight), edges: dijGraph.edges};
             var mutatedGraph = poppedGraph;
+            setVisited(visited.set(first, true));
             // Then, push new node (idx at `rest[0]`)
             if (rest.length > 0) {
                 nodesLeft = poppedGraph.nodes.slice(0, rest[0]-1);
                 selectedNode = poppedGraph.nodes[rest[0]-1];
                 nodesLeft.push({id: selectedNode.id, 
-                    label: selectedNode.label,
+                    label: getRoot(selectedNode.label) + `(${distances.get(selectedNode.id)})`,
                     color: ENV.COLORS.GRAPH_NODE_HIGHLIGHTED});
                 nodesRight = poppedGraph.nodes.slice(rest[0]);
                 mutatedGraph = {nodes: nodesLeft.concat(nodesRight), edges: dijGraph.edges};
             }
             setDijGraph(mutatedGraph);
+            console.log(mutatedGraph);
             return rest;
         });
     };
@@ -271,14 +276,14 @@ const Dijkstra = () => {
     
     useEffect(() => {
         // bfs on the `items` list
-        console.log('items.length > 0 && iterate', items, iterate);
         if (items.length > 0 && iterate) {
             let neighbors = graphNodes.get(items[0]).neighbors;
-            for (let i = 0; i < neighbors.length; i++) {
-                let neighbor = neighbors[i].node;
-                // setTimeout(() => {
+            if (!visited.has(items[0])) {
+                for (let i = 0; i < neighbors.length; i++) {
+                    let neighbor = neighbors[i].node;
+                    console.log("NEIGH", items[0], neighbor)
                     addItemWithDelay(neighbor);
-                // }, (i+1) * 1000);  // i * 1000 ensures a pause between each addition
+                }
             }
             setTimeout(() => {
                 popItemWithDelay();
@@ -301,9 +306,14 @@ const Dijkstra = () => {
         }
     }, [iterate]);
     // ! replace all hex color instances with global variables???
-    const replaceNode = (nodeIdx, color=undefined, label=undefined) => {
+    // addLabelDistance -> you can add to the label if value is >= 0 
+    //  if value is < 0 then the ([node distance]) will be removed
+    // ! < -1 is if u want to use label only ; make better design
+    const replaceNode = (nodeIdx, color=undefined, label=undefined, weight = -1) => {
         var nodesLeft = dijGraph.nodes.slice(0, nodeIdx-1); // this will create a copy with the same items
         var selectedNode = dijGraph.nodes[nodeIdx-1];
+        label = weight >= 0 ? getRoot(selectedNode.label) + `(${weight})` : weight == -1
+            selectedNode.label.substring(0, selectedNode.label.indexOf("(")) 
         nodesLeft.push({id: selectedNode.id, 
                 label: label === undefined ? selectedNode.label : label,
                 color: color === undefined ? selectedNode.color : color});
@@ -313,21 +323,20 @@ const Dijkstra = () => {
 
     const addVisualWeight = (nodeIdx, weight) => {
         var oldLabel = dijGraph.nodes[nodeIdx-1].label;
-        replaceNode(nodeIdx, undefined, oldLabel + ` (${weight})`);
+        replaceNode(nodeIdx, undefined, oldLabel + `(${weight})`);
     } 
 
-    const highlightNode = (nodeIdx, is_highlighted=true) => {
+    const highlightNode = (nodeIdx, weight = -1, is_highlighted = true) => {
         if (is_highlighted) {
-            replaceNode(nodeIdx, ENV.COLORS.GRAPH_NODE_HIGHLIGHTED);
+            replaceNode(simBegin, ENV.COLORS.GRAPH_NODE_HIGHLIGHTED, undefined, weight);
             console.log(`${nodeIdx} HIGHLIGHTED`)
         } else {
-            replaceNode(nodeIdx, ENV.COLORS.GRAPH_NODE);
+            replaceNode(nodeIdx, -1, ENV.COLORS.GRAPH_NODE);
             console.log(`${nodeIdx} UN-HIGHLIGHTED`)
         }
     } 
 
     useEffect (() => {
-        console.log("UE", dijGraph);
         setDijGraph(dijGraph);
     }, [dijGraph])
 
@@ -336,8 +345,6 @@ const Dijkstra = () => {
         <section className='w-full h-screen relative'>
             {/* NAVBAR */}
             <div className='algo-nav-background'>
-                <button onClick={() => {if (true) highlightNode(1)}}>HIGHLTIE</button>
-                <button onClick={() => {if (true) addVisualWeight(1,1)}}> AAA</button>
                 <div className='algo-header'>DIJKSTRA'S</div>
                 <div className='algo-header'>ALGORITHM</div>
                 <div className='algo-subtitle'>Shortest Path Finder</div>
@@ -393,7 +400,6 @@ const Dijkstra = () => {
                     const { nodes } = event;
                     if (nodes.length > 0) {
                         const clickedNodeId = nodes[0];
-                        // console.log(clickedNodeId);
                         if (playing) {
                             if (simBegin === null) {
                                 setSimBegin(clickedNodeId);
