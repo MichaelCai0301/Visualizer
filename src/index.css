@@ -115,6 +115,15 @@ main, .hide-background {
 .algo-nav-background div {
   white-space: nowrap;
 }
+
+.algo-nav-background-no-animation {
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  
+}
+
 .algo-title {
   z-index: 10;
   white-space: nowrap;
@@ -191,6 +200,24 @@ main, .hide-background {
 .algo-description {
   z-index: 10;
   font-size: 1.5vw;
+  white-space: nowrap;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.algo-description-special-1 {
+  z-index: 10;
+  font-size: 1.8vw;
+  font-weight: bold;
+  font-variant:small-caps;
+  color: #c4a3c4;
+  white-space: nowrap;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.algo-description-special-2 {
+  z-index: 10;
+  font-size: 1.8vw;
+  font-weight: bold;
+  font-variant:small-caps;
+  color: #bd7cbd;
   white-space: nowrap;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
@@ -281,4 +308,14 @@ svg {
   line-height: 3vw;
   display: flex;
   opacity: 40%;
+}
+
+/* Rounded border */
+hr.rounded {
+  border-left: 16vw solid #bbb;
+  border-radius: 5px;
+}
+
+input {
+  width: 2vw;
 }

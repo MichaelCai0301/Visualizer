@@ -1,3 +1,4 @@
+// OPTIONAL: Manually a graph
 var graph = {
     nodes: [
       // { id: 1, label: "Node 1", title: "node 1 tootip text", color: "#f5b5ef"},
