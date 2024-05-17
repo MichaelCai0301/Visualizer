@@ -4,6 +4,7 @@ import { Loader } from '../components/Loader';
 import Cuboctahedron from '../models/Cuboctahedron';
 import Octahedron from '../models/Octahedron';
 import T_Icosahedron from '../models/T_Icosahedron';
+import Cube from '../models/Cube';
 import AlgoNavbar from '../components/AlgoNavbar';
 import { useNavigate } from 'react-router-dom';
 import * as ENV from '../Constants'
@@ -69,6 +70,11 @@ const Algorithms = () => {
                                 color={ENV.COLORS.ALGO_HIGHLIGHTED}
                                 {...shapeProps}
                             />
+                            <Cube 
+                                position={[30, 320.5, -683]}
+                                color={ENV.COLORS.ALGO_HIGHLIGHTED}
+                                {...shapeProps}
+                            />
                             <Octahedron 
                                 position={shapePosition}
                                 color={ENV.COLORS.ALGO_HIGHLIGHTED}
@@ -80,6 +86,8 @@ const Algorithms = () => {
                                         navigate("/dijkstra");
                                     } else if (type === "bfs") {
                                         navigate("/bfs");
+                                    } else if (type === "dfs") {
+                                        navigate("/dfs");
                                     } else {
                                         console.log('nothing');
                                         navigate(0); // Refresh

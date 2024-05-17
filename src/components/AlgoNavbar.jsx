@@ -36,6 +36,8 @@ const AlgoNavbar = (props) => {
               className={props.hovered == 2 ? 'algo-title-selected' : 'algo-title'}>Dijkstra's Algorithm</Link>
             <Link to={'/bfs'} style={{ textDecoration: 'none' }} 
               className={props.hovered == 3 ? 'algo-title-selected' : 'algo-title'}>Breadth First Search</Link>
+            <Link to={'/dfs'} style={{ textDecoration: 'none' }} 
+              className={props.hovered == 4 ? 'algo-title-selected' : 'algo-title'}>Depth First Search</Link>
         </div>
     </>
   );
