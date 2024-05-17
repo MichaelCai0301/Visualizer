@@ -29,7 +29,7 @@ const AlgoNavbar = (props) => {
 
   return (
     <>
-        <div className='algo-nav-background'>
+        <div className='nav-background'>
             <Link to={'/tortoise-and-hare'} style={{ textDecoration: 'none' }} 
               className={props.hovered == 1 ? 'algo-title-selected' : 'algo-title'}>Tortoise and Hare</Link>
             <Link to={'/dijkstra'} style={{ textDecoration: 'none' }} 

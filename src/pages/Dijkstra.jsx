@@ -334,18 +334,18 @@ const Dijkstra = () => {
 
             {/* SIDEBAR */}
             <section className='w-full h-screen relative'>
-                <div className='algo-nav-background'>
+                <div className='nav-background'>
                     <div className='algo-header'>DIJKSTRA'S</div>
                     <div className='algo-header'>ALGORITHM</div>
                     <div className='algo-subtitle'>Shortest Path Finder</div>
                     <br/>
                     <hr className="rounded" />
                     {playing ? (
-                        <div className='algo-nav-background-no-animation'>
-                            <div className='algo-description'>
+                        <div className='nav-background-no-animation'>
+                            <div className='description'>
                                 Click on a node to specify 
                             </div>
-                            <div className='algo-description'>
+                            <div className='description'>
                                 start/end nodes!
                             </div>
                             <div className='algo-description-special-2'>
@@ -356,18 +356,18 @@ const Dijkstra = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className='algo-nav-background-no-animation'>
-                            <div className='algo-description'>
+                        <div className='nav-background-no-animation'>
+                            <div className='description'>
                                 Click below to add a node! 
                             </div>
 
-                            <button className={playing ? 'algo-btn-disabled' : 'algo-btn'} onClick={addNode}>
+                            <button className={playing ? 'btn-disabled' : 'algo-btn'} onClick={addNode}>
                                 Add Node {AddIcon}
                             </button>
-                            <div className='algo-description'>
+                            <div className='description'>
                                     Click on 2 nodes and  
                             </div>
-                            <div className='algo-description'>
+                            <div className='description'>
                                 add an edge between them!
                             </div>
                             <div className='algo-description-special-2'>
@@ -383,23 +383,23 @@ const Dijkstra = () => {
                                     placeholder="Enter a weight"
                                 />
                             </form>
-                            <button className={playing ? 'algo-btn-disabled': 'algo-btn'} onClick={addEdge}>
+                            <button className={playing ? 'btn-disabled': 'algo-btn'} onClick={addEdge}>
                                 Add Edge {AddIcon}
                             </button>
                         </div>
                     )}
                     <hr className="rounded" />
                     <br/>
-                    <button className={playing ? 'algo-btn-disabled' : 'algo-btn'} onClick={resetGraph}>
+                    <button className={playing ? 'btn-disabled' : 'algo-btn'} onClick={resetGraph}>
                         RESET {CrossIcon}
                     </button>
                     <br/>
-                    <button className={playing ? 'algo-btn-disabled' : 'algo-btn'} onClick={play}>
+                    <button className={playing ? 'btn-disabled' : 'algo-btn'} onClick={play}>
                         PLAY
                         {playing ? PlayingIcon : PlayIcon}
                     </button>
                     <br/>
-                    <button onClick={() => navigate(-1)} className="back-btn">
+                    <button onClick={() => navigate(-1)} className="algo-back-btn">
                         BACK {BackIcon}
                     </button>
                 </div>

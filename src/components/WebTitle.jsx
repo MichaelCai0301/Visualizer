@@ -10,10 +10,10 @@ const WebTitle = (props) => {
     if (props.hovered == 0) {
       setTextColor({color: "black"});
     } else if (props.hovered == 1) {
-      setTextColor({color: ENV.COLORS.STAT_HIGHLIGHTED});
+      setTextColor({color: ENV.COLORS.STAT_TXT_HIGHLIGHTED});
       props.setTypeSelected("Statistics");
     } else if (props.hovered == 2) {
-      setTextColor({color: ENV.COLORS.ALGO_HIGHLIGHTED});
+      setTextColor({color: ENV.COLORS.ALGO_TXT_HIGHLIGHTED});
       props.setTypeSelected("Algorithms");
     }
   },[props.hovered])

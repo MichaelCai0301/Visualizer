@@ -50,7 +50,7 @@ const Node = (props) => {
                     material={materials["Scene_-_Root"]}
                     rotation={[-Math.PI / 2, 0, 0]}
                 >
-                    <meshPhongMaterial emissive={0x59571A} emissiveIntensity={0} />
+                    <meshPhongMaterial />
                 </mesh>
             </a.group>
             <Tube

@@ -6,6 +6,7 @@ import Octahedron from '../models/Octahedron';
 import T_Icosahedron from '../models/T_Icosahedron';
 import AlgoNavbar from '../components/AlgoNavbar';
 import { useNavigate } from 'react-router-dom';
+import * as ENV from '../Constants'
 
 
 const Algorithms = () => {
@@ -60,17 +61,17 @@ const Algorithms = () => {
                         <hemisphereLight skyColor="#b1e1ff" groundColor="#000000" intensity={1} />
                             <Cuboctahedron 
                                 position={[50, -80.5, -243]}
-                                color={0xFF00F7}
+                                color={ENV.COLORS.ALGO_HIGHLIGHTED}
                                 {...shapeProps}
                             />
                             <T_Icosahedron 
                                 position={[-90, 30.5, -283]}
-                                color={0xFF00F7}
+                                color={ENV.COLORS.ALGO_HIGHLIGHTED}
                                 {...shapeProps}
                             />
                             <Octahedron 
                                 position={shapePosition}
-                                color={0xFF00F7}
+                                color={ENV.COLORS.ALGO_HIGHLIGHTED}
                                 {...shapeProps}
                                 navigateFunction = {(type) => {
                                     if (type === "tortoise") {
