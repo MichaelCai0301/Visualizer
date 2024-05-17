@@ -3,6 +3,7 @@ import { Suspense, useState } from 'react';
 import { Loader } from '../components/Loader';
 import Cuboctahedron from '../models/Cuboctahedron';
 import Octahedron from '../models/Octahedron';
+import T_Icosahedron from '../models/T_Icosahedron';
 import AlgoNavbar from '../components/AlgoNavbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -62,6 +63,11 @@ const Algorithms = () => {
                                 color={0xFF00F7}
                                 {...shapeProps}
                             />
+                            <T_Icosahedron 
+                                position={[-90, 30.5, -283]}
+                                color={0xFF00F7}
+                                {...shapeProps}
+                            />
                             <Octahedron 
                                 position={shapePosition}
                                 color={0xFF00F7}
@@ -71,6 +77,8 @@ const Algorithms = () => {
                                         navigate("/tortoise-and-hare");
                                     } else if (type === "dijkstra") {
                                         navigate("/dijkstra");
+                                    } else if (type === "bfs") {
+                                        navigate("/bfs");
                                     } else {
                                         console.log('nothing');
                                         navigate(0); // Refresh

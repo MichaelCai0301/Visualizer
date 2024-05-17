@@ -10,6 +10,11 @@ const App = () => {
              <Route path="/algorithms" element={<Algorithms/>}/>
              <Route path="/tortoise-and-hare" element={<Tortoise/>}/>
              <Route path="/dijkstra" element={<Dijkstra/>}/>
+             <Route path="/bfs" element={<Dijkstra/>}/>
+             <Route path="/dfs" element={<Dijkstra/>}/>
+             <Route path="/quicksort" element={<Dijkstra/>}/>
+             <Route path="/lln" element={<Dijkstra/>}/>
+             <Route path="/clt" element={<Dijkstra/>}/>
            </Routes>
       </Router>
     </main>
