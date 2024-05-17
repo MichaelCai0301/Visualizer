@@ -5,6 +5,7 @@ import Cuboctahedron from '../models/Cuboctahedron';
 import Octahedron from '../models/Octahedron';
 import T_Icosahedron from '../models/T_Icosahedron';
 import Cube from '../models/Cube';
+import Tetrahedron from '../models/Tetrahedron';
 import AlgoNavbar from '../components/AlgoNavbar';
 import { useNavigate } from 'react-router-dom';
 import * as ENV from '../Constants'
@@ -61,7 +62,7 @@ const Algorithms = () => {
                         <ambientLight intensity={0.5}/>
                         <hemisphereLight skyColor="#b1e1ff" groundColor="#000000" intensity={1} />
                             <Cuboctahedron 
-                                position={[50, -80.5, -243]}
+                                position={[20, -80.5, -243]}
                                 color={ENV.COLORS.ALGO_HIGHLIGHTED}
                                 {...shapeProps}
                             />
@@ -72,6 +73,11 @@ const Algorithms = () => {
                             />
                             <Cube 
                                 position={[30, 320.5, -683]}
+                                color={ENV.COLORS.ALGO_HIGHLIGHTED}
+                                {...shapeProps}
+                            />
+                            <Tetrahedron 
+                                position={[40, -10.5, -73]}
                                 color={ENV.COLORS.ALGO_HIGHLIGHTED}
                                 {...shapeProps}
                             />
@@ -88,6 +94,8 @@ const Algorithms = () => {
                                         navigate("/bfs");
                                     } else if (type === "dfs") {
                                         navigate("/dfs");
+                                    } else if (type === "quicksort") {
+                                        navigate("/quicksort");
                                     } else {
                                         console.log('nothing');
                                         navigate(0); // Refresh
