@@ -1,5 +1,5 @@
 import {Route, BrowserRouter as Router, Routes} from 'react-router-dom';
-import {Home, Statistics, Algorithms, Tortoise, Dijkstra} from './pages';
+import {Home, Statistics, Algorithms, Tortoise, Dijkstra, Bfs} from './pages';
 const App = () => {
   return (
     <main>
@@ -10,7 +10,7 @@ const App = () => {
              <Route path="/algorithms" element={<Algorithms/>}/>
              <Route path="/tortoise-and-hare" element={<Tortoise/>}/>
              <Route path="/dijkstra" element={<Dijkstra/>}/>
-             <Route path="/bfs" element={<Dijkstra/>}/>
+             <Route path="/bfs" element={<Bfs/>}/>
              <Route path="/dfs" element={<Dijkstra/>}/>
              <Route path="/quicksort" element={<Dijkstra/>}/>
              <Route path="/lln" element={<Dijkstra/>}/>
