@@ -443,5 +443,32 @@ hr.rounded {
 }
 
 input {
-  width: 2vw;
+  width: 3vw;
+}
+
+hr.sorting-divider {
+  border-left: 0.4vw solid #621313;
+  border-right: 0.4vw solid #621313;
+  border-bottom:0.4vw solid #621313;
+  border-top: 0.4vw solid #621313;
+  border-radius: 150px;
+  width: 50vw;
+  padding-bottom: vh;
+}
+
+.bar-graph {
+  display: flex;
+  align-items: flex-end;
+  height: 50%;
+  width: 79%;
+  padding: 0.5vw;
+  padding-left: 20vw;
+}
+
+.bar-container {
+  flex: 1;
+  margin: 0 0.5vw;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }

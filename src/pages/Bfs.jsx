@@ -338,7 +338,7 @@ const Bfs = () => {
                                     value={toBeFound}
                                     onChange={changeTarget}
                                     style={{width: "5vw"}}
-                                    placeholder="Enter a node"
+                                    placeholder={0}
                                 />
                             </form>
                             <button className={iterate ? 'btn-disabled' : 'algo-btn'} onClick={bfsMain}>
@@ -356,7 +356,7 @@ const Bfs = () => {
                                     type="number"
                                     value={nodeVal}
                                     onChange={handleChange}
-                                    placeholder="Enter a weight"
+                                    placeholder={0}
                                 />
                             </form>
                             <button className={playing ? 'btn-disabled' : 'algo-btn'} onClick={addNode}>

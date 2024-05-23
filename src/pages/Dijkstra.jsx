@@ -379,7 +379,7 @@ const Dijkstra = () => {
                                     type="number"
                                     value={weight}
                                     onChange={handleChange}
-                                    placeholder="Enter a weight"
+                                    placeholder={0}
                                 />
                             </form>
                             <button className={playing ? 'btn-disabled': 'algo-btn'} onClick={addEdge}>
