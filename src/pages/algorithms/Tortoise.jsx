@@ -1,19 +1,19 @@
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useState, useEffect, useRef} from 'react';
-import { Loader } from '../components/Loader';
-import Node from '../models/Node';
-import grid from '../components/grid';
-import ArrowSet from '../components/ArrowSet';
-import Tube from '../models/Tube';
-import Hare from '../models/Hare';
-import Turtle from '../models/Turtle';
+import { Loader } from '../../components/Loader';
+import Node from '../../models/Node';
+import grid from '../../components/grid';
+import ArrowSet from '../../components/ArrowSet';
+import Tube from '../../models/Tube';
+import Hare from '../../models/Hare';
+import Turtle from '../../models/Turtle';
 import { useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
-import '../components/Popup.css';
-import CrossIcon from '../assets/svg/x_svg';
-import PlayIcon from '../assets/svg/play_svg';
-import PlayingIcon from '../assets/svg/playing_svg';
-import BackIcon from '../assets/svg/back_svg';
+import '../../components/Popup.css';
+import CrossIcon from '../../assets/svg/x_svg';
+import PlayIcon from '../../assets/svg/play_svg';
+import PlayingIcon from '../../assets/svg/playing_svg';
+import BackIcon from '../../assets/svg/back_svg';
 
 class LinkedNode {
   constructor(r,c) {

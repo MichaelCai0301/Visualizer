@@ -1,18 +1,15 @@
-import { Canvas } from '@react-three/fiber';
-import { Suspense, useState, useEffect, useRef} from 'react';
-import { Loader } from '../components/Loader';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Graph from 'react-graph-vis'
-import graph from '../components/graph';
-import { Network } from 'vis-network';
-import AddIcon from '../assets/svg/add_svg';
-import CrossIcon from '../assets/svg/x_svg';
-import PlayingIcon from '../assets/svg/playing_svg';
-import PlayIcon from '../assets/svg/play_svg';
-import * as ENV from '../Constants'
-import BackIcon from '../assets/svg/back_svg';
+import graph from '../../components/graph';
+import AddIcon from '../../assets/svg/add_svg';
+import CrossIcon from '../../assets/svg/x_svg';
+import PlayingIcon from '../../assets/svg/playing_svg';
+import PlayIcon from '../../assets/svg/play_svg';
+import * as ENV from '../../Constants'
+import BackIcon from '../../assets/svg/back_svg';
 import Popup from 'reactjs-popup';
-import '../components/Popup.css';
+import '../../components/Popup.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

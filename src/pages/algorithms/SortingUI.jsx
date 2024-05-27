@@ -1,5 +1,5 @@
 import React from 'react';
-import * as ENV from '../Constants'
+import * as ENV from '../../Constants'
 
 const SortingUI = ({ data, pivotIdx }) => {
   const posMax = Math.max(...data);

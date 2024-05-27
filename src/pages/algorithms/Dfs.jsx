@@ -1,22 +1,19 @@
-import { Canvas } from '@react-three/fiber';
-import { Suspense, useState, useEffect, useRef} from 'react';
-import { Loader } from '../components/Loader';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Graph from 'react-graph-vis'
-import graph from '../components/graph';
-import { Network } from 'vis-network';
-import AddIcon from '../assets/svg/add_svg';
-import CrossIcon from '../assets/svg/x_svg';
-import PlayingIcon from '../assets/svg/playing_svg';
-import PlayIcon from '../assets/svg/play_svg';
-import * as ENV from '../Constants'
-import BackIcon from '../assets/svg/back_svg';
+import graph from '../../components/graph';
+import AddIcon from '../../assets/svg/add_svg';
+import CrossIcon from '../../assets/svg/x_svg';
+import PlayingIcon from '../../assets/svg/playing_svg';
+import PlayIcon from '../../assets/svg/play_svg';
+import * as ENV from '../../Constants'
+import BackIcon from '../../assets/svg/back_svg';
 import Popup from 'reactjs-popup';
-import '../components/Popup.css';
+import '../../components/Popup.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
- 
-// docs:  https://visjs.github.io/vis-network/docs/network/#methodSelection
+
+// docs: https://visjs.github.io/vis-network/docs/network/#methodSelection
 
 
 // Graph node of graph data structure
@@ -50,7 +47,7 @@ const options = {
 };
 
 
-const Bfs = () => {
+const Dfs = () => {
     const [dijGraph, setDijGraph] = useState(graph);                            // Main graph display
     const [nNode, setNNode] = useState(0);                                      // Node number tracker
     const [startNode, setStartNode] = useState(null);                           // For adding edges
@@ -61,7 +58,7 @@ const Bfs = () => {
     const [simBegin, setSimBegin] = useState(null);                             // Starting node in simulation
     const [simEnd, setSimEnd] = useState(null);                                 // Ending node in simulation
     const [graphNodes, setGraphNodes] = useState(new Map());                    // Underlying graph datastructure
-    const [iterate, setIterate] = useState(false);                              // For iteration/loop control
+    const [running, setRunning] = useState(false);                              // For iteration/loop control
     const [nodeVal, setNodeVal] = useState(0);                                  // Value of a node
     const [toBeFound, setToBeFound] = useState(0);                              // Target node value for search
     const [result, setResult] = useState("");                                   // Final result
@@ -125,8 +122,8 @@ const Bfs = () => {
         if (startNode !== endNode) {
             let startGNode = graphNodes.get(startNode);
             let endGNode = graphNodes.get(endNode);
-            startGNode.neighbors.push({node: endNode});
-            endGNode.neighbors.push({node: startNode});
+            startGNode.neighbors.push(endNode);
+            endGNode.neighbors.push(startNode);
             setGraphNodes(new Map(graphNodes.set(startNode, startGNode)));
             setGraphNodes(new Map(graphNodes.set(endNode, endGNode)));
         }
@@ -161,7 +158,6 @@ const Bfs = () => {
         setSimEnd(null);
         setSimBegin(null);
         if (playing) return; // Can't play while already playing  
-        setVisited(new Map());
         
         // Enter simulation mode
         toast('Specify a node to be found!');
@@ -179,79 +175,54 @@ const Bfs = () => {
         setPlaying(true);
         setResult("");
     }
-    const [items, setItems] = useState([]);             // The BFS Queue
-    const [visited, setVisited] = useState(new Map());  // Visited nodes
 
-    // Begin BFS
-    const bfsMain = () => {
-        if (toBeFound !== null && playing && !iterate) {
-            if (graphNodes.size < 2) {
-                if (graphNodes.size == 0 || graphNodes.get(1).val !== toBeFound) {
-                    setResult("NOT FOUND");
-                } else {
-                    setResult("FOUND")
-                }
-                setPlaying(false);
+    const dfsMain = () => {
+        setRunning(true);
+        if (running) return;
+        if (graphNodes.size == 0) {
+            console.log("NOT FOUND");
+            setResult("NOT FOUND");
+            setPlaying(false);
+            return;
+        }
+        const visited = new Set();
+        let found = false; 
+
+        async function dfsHelper(node) {
+            if (visited.has(node) || found) return;
+            if (toBeFound == node.val) {
+                console.log("FOUND");
+                setResult("FOUND");
+                found = true;
                 return;
             }
-            setItems([1]);
-            highlightNode(1);
-            setIterate(true);    
+            visited.add(node);
+            console.log(node.idx);
+            highlightNode(node.idx)
+    
+            // Delay for 1 second (1000 ms)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+    
+            for (var neighborIdx of node.neighbors) {
+                await dfsHelper(graphNodes.get(neighborIdx));
+            }
         }
+    
+        (async () => {
+            await dfsHelper(graphNodes.get(1));
+            if (!found) {
+                console.log("NOT FOUND", found);
+                setResult("NOT FOUND");
+            }
+            setPlaying(false);
+        })();
     }
 
-    // Add to BFS queue with delay for animation
-    const addItemWithDelay = (i) => {
-        setItems((prevItems) => {
-            let cur = prevItems[0];
-            if (i != cur && adjMatrix[i][cur] != Infinity) {
-                return [...prevItems, i];
-            }
-            return prevItems;
-        });
-    };
-    
-    //  pops first node on BFS queue, adds that node's children to queue
-    //  renders the changes by unhighlighting popped node and highlighting
-    //  the next node.
-    // Doesn't use highlightNode since 2 nodes must be highlighted at once per state update
-    const popItemWithDelay = () => {
-        setItems((prevItems) => {
-            let [first, ...rest] = prevItems;
-            // First, pop old node (idx at `first`)
-            var nodesLeft = dijGraph.nodes.slice(0, first-1); // this will create a copy with the same items
-            var selectedNode = dijGraph.nodes[first-1];
-            nodesLeft.push({id: selectedNode.id, 
-                    color: ENV.COLORS.GRAPH_NODE});
-            var nodesRight = dijGraph.nodes.slice(first);
-            var poppedGraph = {nodes: nodesLeft.concat(nodesRight), edges: dijGraph.edges};
-            var mutatedGraph = poppedGraph;
-            setVisited(visited.set(first, true));
-
-            // Then, push new node (idx at `rest[0]`)
-            if (rest.length > 0) {
-                nodesLeft = poppedGraph.nodes.slice(0, rest[0]-1);
-                selectedNode = poppedGraph.nodes[rest[0]-1];
-                nodesLeft.push({id: selectedNode.id, 
-                    color: ENV.COLORS.GRAPH_NODE_HIGHLIGHTED});
-                nodesRight = poppedGraph.nodes.slice(rest[0]);
-                mutatedGraph = {nodes: nodesLeft.concat(nodesRight), edges: dijGraph.edges};
-            }
-            if (toBeFound === graphNodes.get(first).val) {
-                setResult("FOUND");
-                setPlaying(false);
-            }
-            setDijGraph(mutatedGraph);
-            return rest;
-        });
-    };
-
     useEffect (() => {
-        setIterate(false);
         if (!playing) {
             setPlaying(false);
             setGraphOpt(options);
-            setItems([]);
+            setRunning(false);
 
             // Reset colors of nodes
             if (graphNodes.size > 0) {
@@ -261,30 +232,7 @@ const Bfs = () => {
             }
         }
     }, [playing])
-    // Perform BFS
-    useEffect(() => {
-        if (items.length > 0 && iterate) {
-            let neighbors = graphNodes.get(items[0]).neighbors;
-            for (let i = 0; i < neighbors.length; i++) {
-                let neighbor = neighbors[i].node;
-                if (!visited.has(neighbor)) {
-                    addItemWithDelay(neighbor);
-                }
-            }
-            setTimeout(() => {
-                popItemWithDelay();
-            }, (neighbors.length+0.7) * 500);
-            setTimeout(() => {
-                setIterate(false);
-            }, (neighbors.length+0.8) * 500);
-            setTimeout(() => { 
-                setIterate(true);
-            }, (neighbors.length+0.9) * 500);
-        } else if (items.length == 0 && iterate && result.length == 0) {
-            setResult("NOT FOUND")
-            setPlaying(false);
-        }
-    }, [iterate]);
+  
 
     // Helpers for highlighting ndoes
     const replaceNode = (nodeIdx, color=undefined) => {
@@ -321,7 +269,7 @@ const Bfs = () => {
             {/* SIDEBAR */}
             <section className='w-full h-screen relative'>
                 <div className='nav-background'>
-                    <div className='algo-header'>BREADTH </div>
+                    <div className='algo-header'>DEPTH </div>
                     <div className='algo-header'>FIRST </div>
                     <div className='algo-header'>SEARCH </div>
                     <div className='algo-subtitle'>Graph Traversal</div>
@@ -341,7 +289,7 @@ const Bfs = () => {
                                     placeholder={0}
                                 />
                             </form>
-                            <button className={iterate ? 'btn-disabled' : 'algo-btn'} onClick={bfsMain}>
+                            <button className={running ? 'btn-disabled' : 'algo-btn'} onClick={dfsMain}>
                                 FIND!
                             </button>
                         </>
@@ -424,4 +372,4 @@ const Bfs = () => {
     )
 }
 
-export default Bfs
+export default Dfs

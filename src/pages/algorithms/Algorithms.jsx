@@ -1,14 +1,14 @@
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useState } from 'react';
-import { Loader } from '../components/Loader';
-import Cuboctahedron from '../models/Cuboctahedron';
-import Octahedron from '../models/Octahedron';
-import T_Icosahedron from '../models/T_Icosahedron';
-import Cube from '../models/Cube';
-import Tetrahedron from '../models/Tetrahedron';
-import AlgoNavbar from '../components/AlgoNavbar';
+import { Loader } from '../../components/Loader';
+import Cuboctahedron from '../../models/Cuboctahedron';
+import Octahedron from '../../models/Octahedron';
+import T_Icosahedron from '../../models/T_Icosahedron';
+import Cube from '../../models/Cube';
+import Tetrahedron from '../../models/Tetrahedron';
+import AlgoNavbar from '../../components/AlgoNavbar';
 import { useNavigate } from 'react-router-dom';
-import * as ENV from '../Constants'
+import * as ENV from '../../Constants'
 
 
 const Algorithms = () => {
