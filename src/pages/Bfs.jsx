@@ -15,8 +15,8 @@ import Popup from 'reactjs-popup';
 import '../components/Popup.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-// docs: https://visjs.github.io/vis-network/docs/network/#methodSelection
+ 
+// docs:  https://visjs.github.io/vis-network/docs/network/#methodSelection
 
 
 // Graph node of graph data structure
