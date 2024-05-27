@@ -5,6 +5,8 @@ import Cuboctahedron from '../models/Cuboctahedron';
 import Octahedron from '../models/Octahedron';
 import WebTitle from '../components/WebTitle';
 import { useNavigate } from "react-router-dom";
+import * as ENV from '../Constants'
+
 
 const Home = () => {
     const [hovered, setHovered] = useState(0);
@@ -61,12 +63,12 @@ const Home = () => {
                         <hemisphereLight skyColor="#b1e1ff" groundColor="#000000" intensity={1} />
                             <Cuboctahedron 
                                 position={[50, -80.5, -243]}
-                                color={0xFF00F7}
+                                color={ENV.COLORS.ALGO_HIGHLIGHTED}
                                 {...shapeProps}
                             />
                             <Octahedron 
                                 position={shapePosition}
-                                color={0x59571A}
+                                color={ENV.COLORS.STAT_HIGHLIGHTED}
                                 {...shapeProps}
                                 navigateFunction = {(type) => {
                                     if (type === "Statistics") {

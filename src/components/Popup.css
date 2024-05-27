@@ -7,7 +7,7 @@
     }
   }
 .cycle-popup {
-    animation: popUp 0.5s ease-in-out;
+    animation: popUp 0.2s ease-in-out;
     background-color: rgb(250, 179, 241);
     width: 50vw;
     height: 25vw;
@@ -17,6 +17,9 @@
     border-top-left-radius: 2vw;
     border-bottom-right-radius: 2vw;
     border-bottom-left-radius: 2vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center; 

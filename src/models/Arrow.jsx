@@ -3,6 +3,7 @@ import { useGLTF } from "@react-three/drei";
 import arrow from '../assets/3d/shapes/arrow.glb';
 import {a} from '@react-spring/three';
 import grid from '../components/grid';
+import * as ENV from '../Constants';
 
 
 const Arrow = (props) => {
@@ -126,7 +127,8 @@ const Arrow = (props) => {
                 onClick={handleClick}
                 visible={props.appear}
             >
-                <meshPhongMaterial emissive={hovered == 1 ?  0x0a8505: 0x949494} emissiveIntensity={hovered == 1 ? 4 : 1} color={0x969696}/>
+                <meshPhongMaterial emissive={hovered == 1 ? ENV.COLORS.ARROW_HIGHLIGHTED : ENV.COLORS.ARROW}
+                     emissiveIntensity={hovered == 1 ? 4 : 1} color={ENV.COLORS.ARROW}/>
             </mesh>
         </a.group>
     );

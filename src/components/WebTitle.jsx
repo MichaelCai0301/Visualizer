@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import title from '../assets/visualizer.gif';
+import * as ENV from '../Constants'
 
 const WebTitle = (props) => {
   const [textColor, setTextColor] = useState({color: "black"});
@@ -9,10 +10,10 @@ const WebTitle = (props) => {
     if (props.hovered == 0) {
       setTextColor({color: "black"});
     } else if (props.hovered == 1) {
-      setTextColor({color: "#ffeb14"});
+      setTextColor({color: ENV.COLORS.STAT_TXT_HIGHLIGHTED});
       props.setTypeSelected("Statistics");
     } else if (props.hovered == 2) {
-      setTextColor({color:' #ffa8fc'});
+      setTextColor({color: ENV.COLORS.ALGO_TXT_HIGHLIGHTED});
       props.setTypeSelected("Algorithms");
     }
   },[props.hovered])

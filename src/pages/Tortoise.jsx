@@ -306,37 +306,37 @@ const Tortoise = () => {
             </Popup>
 
             {/* NAVBAR */}
-            <div className='algo-nav-background'>
+            <div className='nav-background'>
                 <div className='algo-header'>TORTOISE</div>
                 <div className='algo-header'>& HARE</div>
                 <div className='algo-subtitle'>Cycle Detection</div>
                 <br/>
-                <div className='algo-description'>
+                <div className='description'>
                     Use the arrows to 
                 </div>
-                <div className='algo-description'>
+                <div className='description'>
                      create a connected grid. 
                 </div>
-                <div className='algo-description'>
+                <div className='description'>
                     Press PLAY when ready to
                 </div>
-                <div className='algo-description'>
+                <div className='description'>
                     detect any cycles with the 
                 </div>
-                <div className='algo-description'>
+                <div className='description'>
                     algorithm.
                 </div>
                 <br/><br/>
-                <button className={playing || turtPlay ? 'algo-btn-disabled' : 'algo-btn'} onClick={play}>
+                <button className={playing || turtPlay ? 'btn-disabled' : 'algo-btn'} onClick={play}>
                     PLAY
                     {playing || turtPlay ? PlayingIcon : PlayIcon}
                 </button>
                 <br/> 
-                <button className={playing || turtPlay ? 'algo-btn-disabled' : 'algo-btn'} onClick={resetGrid}>
+                <button className={playing || turtPlay ? 'btn-disabled' : 'algo-btn'} onClick={resetGrid}>
                     RESET {CrossIcon}
                 </button>
                 <br/>
-                <button onClick={() => navigate(-1)} className="back-btn">
+                <button onClick={() => navigate(-1)} className="algo-back-btn">
                     BACK {BackIcon}
                 </button>
             </div>
