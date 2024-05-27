@@ -1,8 +1,12 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {Link} from "react-router-dom";
+import BackIcon from '../assets/svg/back_svg';
+import { useNavigate } from 'react-router-dom';
 
 const AlgoNavbar = (props) => {
+
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     switch (props.hovered) {
@@ -40,7 +44,12 @@ const AlgoNavbar = (props) => {
               className={props.hovered == 4 ? 'algo-title-selected' : 'algo-title'}>Depth First Search</Link>
             <Link to={'/quicksort'} style={{ textDecoration: 'none' }} 
               className={props.hovered == 5 ? 'algo-title-selected' : 'algo-title'}>Quicksort</Link>
+            <br/>
+            <button onClick={() => navigate(-1)} className="algo-back-btn">
+                        BACK {BackIcon}
+            </button>
         </div>
+        
     </>
   );
 };

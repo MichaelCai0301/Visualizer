@@ -1,8 +1,12 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {Link} from "react-router-dom";
+import BackIcon from '../assets/svg/back_svg';
+import { useNavigate } from 'react-router-dom';
 
 const StatNavbar = (props) => {
+
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     switch (props.hovered) {
@@ -25,6 +29,10 @@ const StatNavbar = (props) => {
               className={props.hovered == 1 ? 'stat-title-selected' : 'stat-title'}>Law of Large Numbers</Link>
             <Link to={'/clt'} style={{ textDecoration: 'none' }} 
               className={props.hovered == 2 ? 'stat-title-selected' : 'stat-title'}>Central Limit Theorem</Link>
+            <br/>
+            <button onClick={() => navigate(-1)} className="stat-back-btn">
+                        BACK {BackIcon}
+            </button>
         </div>
     </>
   );
