@@ -1,11 +1,11 @@
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useState } from 'react';
-import { Loader } from '../components/Loader';
-import Cuboctahedron from '../models/Cuboctahedron';
-import Octahedron from '../models/Octahedron';
-import StatNavbar from '../components/StatNavbar';
+import { Loader } from '../../components/Loader';
+import Cuboctahedron from '../../models/Cuboctahedron';
+import Octahedron from '../../models/Octahedron';
+import StatNavbar from '../../components/StatNavbar';
 import { useNavigate } from 'react-router-dom';
-import * as ENV from '../Constants'
+import * as ENV from '../../Constants'
 
 
 const Statistics = () => {

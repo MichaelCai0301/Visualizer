@@ -1,5 +1,5 @@
 import Home from './Home';
-import Statistics from './Statistics';
+import Statistics from './stats/Statistics';
 import Algorithms from './algorithms/Algorithms';
 import Tortoise from './algorithms/Tortoise';
 import Dijkstra from './algorithms/Dijkstra';
