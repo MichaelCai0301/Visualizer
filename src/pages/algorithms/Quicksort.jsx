@@ -67,7 +67,8 @@ const Quicksort = () => {
 
     const addElt = () => {
         if (playing) return;
-        setCurArr([...curArr, curElt]);
+        if (curElt) setCurArr([...curArr, curElt]);
+        else setCurArr([...curArr, 0]);
     }
 
     const play = async () => {

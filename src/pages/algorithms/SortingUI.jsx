@@ -25,11 +25,12 @@ const SortingUI = ({ data, pivotIdx }) => {
               transition: 'height 0.3s ease',
               position: 'relative',
               top: `${value < 0 ? Math.abs(value)/maxVal*10 : 0}vh`,
-              alignItems: `${value < 0 ? 'flex-start' : 'flex-end'}`,
+              alignItems: 'center',
+              flexDirection: 'column',
             }}
           >
-            {pivotIdx == index && '(PIVOT)'}
-            {value} 
+            <div>{pivotIdx == index && '(PIVOT)'}</div>
+            <div>{value}</div>
           </div>
         </div>
       ))}
