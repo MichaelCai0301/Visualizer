@@ -185,6 +185,7 @@ const LLN = () => {
                     <button className={'stat-btn'} onClick={addObs}>
                             Add Data {AddIcon}
                     </button>
+                    <br/>
                     <div className='description'>
                             {distribution === "Normal" ? "Set mean:" : distribution === "Uniform" ? "Set min:" : "Set # trials:"}
                     </div>
