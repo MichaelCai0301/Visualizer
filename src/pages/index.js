@@ -6,5 +6,7 @@ import Dijkstra from './algorithms/Dijkstra';
 import Bfs from './algorithms/Bfs';
 import Dfs from './algorithms/Dfs';
 import Quicksort from './algorithms/Quicksort';
+import LLN from './stats/LLN';
 
-export {Home, Statistics, Algorithms, Tortoise, Dijkstra, Bfs, Dfs, Quicksort};
+export {Home, Statistics, Algorithms, Tortoise, Dijkstra, Bfs, Dfs, Quicksort,
+        LLN};

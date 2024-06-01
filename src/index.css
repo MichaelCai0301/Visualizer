@@ -482,3 +482,33 @@ input[type=number] {
   margin: 1vh 0.5vw;
   cursor: pointer;
 }
+
+.line-graph {
+  width: 40%; 
+  padding-left: 42vw;
+  padding-top: 55vh;
+  position: absolute;
+}
+
+/* Dropdown */
+.custom-select {
+  min-width: 100px;
+  padding: 0.5em;
+}
+
+select {
+  appearance: none;
+  /* safari */
+  -webkit-appearance: none;
+  /* other styles for aesthetics */
+  width: 100%;
+  font-size: 0.8rem;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  padding: 0.675em 6em 0.675em 1em;
+  background-color: #bbbbbb;
+  border: 0.2em solid #474747;
+  border-radius: 0.55rem;
+  color: #000;
+  cursor: pointer;
+}
