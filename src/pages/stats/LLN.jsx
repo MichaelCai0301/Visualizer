@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import * as RAND from './DistLib'
 import DistUI from './DistUI';
 import LineGraph from '../../components/LineGraph';
-import CrossIcon from '../../assets/svg/x_svg';
 
 const LLN = () => {
     const navigate = useNavigate();
@@ -214,10 +213,6 @@ const LLN = () => {
                         />
                     </form>
                     <hr className="rounded" />
-                    <br/>
-                    <button className={'stat-btn'} onClick={resetData}>
-                        RESET {CrossIcon}
-                    </button>
                     <br/>
                     <button onClick={() => navigate(-1)} className="stat-back-btn">
                         BACK {BackIcon}

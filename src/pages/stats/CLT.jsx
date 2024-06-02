@@ -6,7 +6,8 @@ import '../../components/Popup.css';
 import 'react-toastify/dist/ReactToastify.css';
 import * as RAND from './DistLib'
 import DistUI from './DistUI';
-import CrossIcon from '../../assets/svg/x_svg';
+import LineGraph from '../../components/LineGraph';
+
 const CLT = () => {
     const navigate = useNavigate();
     const [observations, setObservations] = useState(new Map());
@@ -160,7 +161,7 @@ const CLT = () => {
             },
         ],
     };
-
+    // ! INCL RESET BUTTN
     return (
         <> 
             {/* SIDEBAR */}
@@ -213,10 +214,6 @@ const CLT = () => {
                         />
                     </form>
                     <hr className="rounded" />
-                    <br/>
-                    <button className={'stat-btn'} onClick={resetData}>
-                        RESET {CrossIcon}
-                    </button>
                     <br/>
                     <button onClick={() => navigate(-1)} className="stat-back-btn">
                         BACK {BackIcon}
