@@ -1,6 +1,6 @@
 import {Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 import {Home, Statistics, Algorithms, Tortoise, Dijkstra, Bfs, Dfs, Quicksort,
-        LLN} from './pages';
+        LLN, CLT} from './pages';
 const App = () => {
   return (
     <main>
@@ -15,7 +15,7 @@ const App = () => {
              <Route path="/dfs" element={<Dfs/>}/>
              <Route path="/quicksort" element={<Quicksort/>}/>
              <Route path="/lln" element={<LLN/>}/>
-             <Route path="/clt" element={<Dijkstra/>}/>
+             <Route path="/clt" element={<CLT/>}/>
            </Routes>
       </Router>
     </main>

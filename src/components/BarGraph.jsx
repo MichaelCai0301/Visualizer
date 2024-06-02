@@ -1,12 +1,19 @@
 import React from 'react';
 
-const BarGraph = ({ data, labels, pivotIdx, negBarColor, posBarColor }) => {
+const BarGraph = ({ data, labels, pivotIdx, negBarColor, posBarColor,
+  width=79, height=50}) => {
   const posMax = Math.max(...data);
   const negMax = Math.min(...data);
   const maxVal = Math.max(Math.abs(negMax), posMax);
 
   return (
-    <div className="bar-graph">
+    <div 
+      className="bar-graph"
+      style={{
+        width: `${width}%`,
+        height: `${height}%`
+      }}
+    >
       {data.map((value, index) => (
         <div key={index} className="bar-container">
           <div
