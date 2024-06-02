@@ -181,8 +181,6 @@ const LLN = () => {
                             <option value="Uniform">Uniform</option>
                         </select>
                     </div>
-                    <div className='description'>Selected Value: {distribution}</div>
-                    <br/>
                     <button className={'stat-btn'} onClick={addObs}>
                             Add Data {AddIcon}
                     </button>

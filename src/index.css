@@ -483,7 +483,7 @@ input[type=number] {
 
 .line-graph {
   width: 40%; 
-  padding-left: 42vw;
+  padding-left: 40vw;
   padding-top: 55vh;
   position: absolute;
 }
@@ -531,6 +531,7 @@ select {
 .border-container {
   padding-left: 25vw;
   padding-top: 10vh;
+  z-index: 100;
 }
 .border-content {
   padding-top: 15vh;
